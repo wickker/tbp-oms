@@ -1,0 +1,46 @@
+---
+version: 2
+plan:
+  project-key: SNS
+  key: SQFEB
+  name: LIVE CHAT WEB SONARQUBE
+
+branches:
+  delete:
+    after-deleted-days: 0
+    after-inactive-days: never
+  integration:
+    merge-from: master
+    push-on-success: true
+  link-to-jira: true
+
+notifications:
+  - recipients:
+      - watchers
+      - committers
+    events:
+      - plan-failed
+      - plan-completed
+      - plan-status-changed
+      - plan-comment-added
+      - plan-responsibility-changed
+
+stages:
+  - Stage 1:
+      jobs:
+        - Generate Metrics
+
+Generate Metrics:
+  tasks:
+    - script: |
+        #!/bin/bash
+        set -e
+        export NV_SERVICE="live-chat-web"
+
+        /opt/builds/scripts/sonarqube.sh
+
+  # final-tasks:
+  #   - test-parser:
+  #       type: junit
+  #       test-results:
+  #         - coverage/*.xml

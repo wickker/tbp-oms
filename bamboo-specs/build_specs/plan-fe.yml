@@ -1,0 +1,59 @@
+---
+version: 2
+plan:
+  project-key: SNS
+  key: FEB
+  name: LIVE CHAT WEB
+
+branches:
+  create:
+    for-new-branch: .*release/.*
+  delete:
+    after-deleted-days: 0
+    after-inactive-days: never
+  integration:
+    merge-from: master
+    push-on-success: true
+  link-to-jira: true
+
+notifications:
+  - recipients:
+      - watchers
+      - committers
+    events:
+      - plan-failed
+      - plan-completed
+      - plan-status-changed
+      - plan-comment-added
+      - plan-responsibility-changed
+
+stages:
+  - Stage 1:
+      jobs:
+        - Build
+
+Build:
+  tasks:
+    - script: |
+        #!/bin/bash
+        set -e
+        export NV_SERVICE="live-chat-web"
+        export QA_DEPLOYMENT_PLAN="2334458255" 
+        /opt/builds/scripts/build.sh
+
+    - inject-variables:
+        file: tag.txt
+        namespace: tag
+        scope: RESULT
+
+  # final-tasks:
+  #   - test-parser:
+  #       type: junit
+  #       test-results:
+  #         - coverage/*.xml
+
+  artifacts:
+    - name: WEB
+      location: build
+      pattern: '**'
+      required: true

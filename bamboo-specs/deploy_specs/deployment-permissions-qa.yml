@@ -1,0 +1,36 @@
+---
+version: 2
+deployment:
+  name: Live Chat Web (QA)
+
+# These permissions apply to the deployment project
+deployment-permissions:
+  - groups:
+      - Tech - Engineering - SNS - Admins (Reg)
+    permissions:
+      - view
+      - edit
+  - roles:
+      - anonymous
+      - logged-in
+    permissions:
+      - view
+
+# These permissions apply to all environments defined in this deployment project
+default-environment-permissions:
+  - groups:
+      - Tech - Engineering - SNS - Admins (Reg)
+    permissions:
+      - view
+      - edit
+      - deploy
+  - groups:
+      - Tech - Engineering - SNS (Reg)
+    permissions:
+      - view
+      - deploy
+  - roles:
+      - anonymous
+      - logged-in
+    permissions:
+      - view

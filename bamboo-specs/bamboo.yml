@@ -1,0 +1,12 @@
+---
+!include build_specs/plan-fe.yml
+---
+!include build_specs/plan-sqfe.yml
+---
+!include deploy_specs/deployment-production.yml
+---
+!include deploy_specs/deployment-permissions-production.yml
+---
+!include deploy_specs/deployment-qa.yml
+---
+!include deploy_specs/deployment-permissions-qa.yml
