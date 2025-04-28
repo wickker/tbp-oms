@@ -5,7 +5,6 @@
   "type": "module",
   "scripts": {
     "build": "tsc -b && vite build",
-    "build:ci": ". ./scripts/build-ci.sh",
     "dev": "vite",
     "lint": "eslint --fix . && prettier --write .",
     "preview": "vite preview",
