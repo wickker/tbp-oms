@@ -3,7 +3,6 @@
 body {
   font-family: Inter, Arial, sans-serif;
   font-weight: 400;
-  color: var(--color-gray-8);
 }
 
 .scrollbar::-webkit-scrollbar {
@@ -22,27 +21,5 @@ body {
 }
 
 @theme {
-  --color-red-1: #ffeded; /* Active Chat Item */
-  --color-red-2: #ff7b7b; /* Active Chat Item Cursor */
-  --color-red-3: #ff1010; /* Offline State, Ticket Pending */
-  --color-red-4: #c31424; /* Tab Cursor, Icon button */
-  --color-red-5: #9a191f;
-  --color-red-6: #721a19; /* Active Nav Item */
 
-  --color-gray-1: #f6f6f6; /* Background */
-  --color-gray-2: #eaeaea; /* Divider */
-  --color-gray-3: #d7d7d7; /* Message Box */
-  --color-gray-4: #a9a9a9; /* Light Icons */
-  --color-gray-5: #8e8e8e; /* Input/Radio/Checkbox */
-  --color-gray-6: #828282; /* Dragables */
-  --color-gray-7: #777777; /* Filter Icons */
-  --color-gray-8: #5e5e5e; /* Text */
-  --color-gray-9: #4c4c4c; /* Nav Bar Divider */
-  --color-gray-10: #2e2e2e; /* Nav Bar */
-
-  --color-blue-1: #daecff; /* Shipper/Consignee Tag */
-
-  --color-green-1: #00b818; /* Online State, Ticket Resolved, Current Quota Easy */
-
-  --color-yellow-1: #ffb152; /* Current Quota Medium */
 }
