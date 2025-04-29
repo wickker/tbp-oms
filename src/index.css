@@ -6,6 +6,7 @@
 body {
   font-family: Inter, Arial, sans-serif;
   font-weight: 400;
+  overflow-y: hidden;
 }
 
 .scrollbar::-webkit-scrollbar {

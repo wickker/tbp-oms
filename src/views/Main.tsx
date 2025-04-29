@@ -39,45 +39,47 @@ const Row = () => (
 
 const Main = () => {
   return (
-    <div className='mx-auto flex h-[100dvh] max-w-6xl flex-col p-3'>
-      <div className='flex gap-x-2 pb-3'>
-        <button
-          className={cn(
-            'focus-visible-app bg-app-default inline-flex h-fit w-fit items-center justify-center gap-x-2 rounded-md border border-slate-300 bg-white px-2 py-1 text-xs whitespace-nowrap hover:cursor-pointer hover:opacity-95 disabled:pointer-events-none disabled:opacity-50'
-          )}
-        >
-          Fulfilled
-        </button>
-        <button
-          className={cn(
-            'focus-visible-app bg-app-default inline-flex h-fit w-fit items-center justify-center gap-x-2 rounded-md border border-slate-300 bg-white px-2 py-1 text-xs whitespace-nowrap hover:cursor-pointer hover:opacity-95 disabled:pointer-events-none disabled:opacity-50'
-          )}
-        >
-          Unfulfilled
-        </button>
-      </div>
+    <div className='min-h-[100dvh] min-w-max overflow-y-hidden'>
+      <div className='mx-auto flex max-w-6xl flex-col p-3'>
+        <div className='flex h-[38px] gap-x-2 pb-3'>
+          <button
+            className={cn(
+              'focus-visible-app bg-app-default inline-flex h-fit w-fit items-center justify-center gap-x-2 rounded-md border border-slate-300 bg-white px-2 py-1 text-xs whitespace-nowrap hover:cursor-pointer hover:opacity-95 disabled:pointer-events-none disabled:opacity-50'
+            )}
+          >
+            Fulfilled
+          </button>
+          <button
+            className={cn(
+              'focus-visible-app bg-app-default inline-flex h-fit w-fit items-center justify-center gap-x-2 rounded-md border border-slate-300 bg-white px-2 py-1 text-xs whitespace-nowrap hover:cursor-pointer hover:opacity-95 disabled:pointer-events-none disabled:opacity-50'
+            )}
+          >
+            Unfulfilled
+          </button>
+        </div>
 
-      <div className='grid grid-cols-[100px_150px_150px_100px_100px_minmax(200px,1fr)_100px_150px] items-center text-sm'>
-        <Header>Order ID</Header>
-        <Header>Shopify ID</Header>
-        <Header>Customer Name</Header>
-        <Header>Created At</Header>
-        <Header>Total</Header>
-        <Header>Items</Header>
-        <Header>Discounts</Header>
-        <Header>Actions</Header>
+        <div className='grid h-[45px] grid-cols-[100px_150px_150px_100px_100px_minmax(200px,1fr)_150px_150px] items-center text-sm'>
+          <Header>Order ID</Header>
+          <Header>Shopify ID</Header>
+          <Header>Customer Name</Header>
+          <Header>Created At</Header>
+          <Header>Total</Header>
+          <Header>Items</Header>
+          <Header>Discounts</Header>
+          <Header>Actions</Header>
 
-        <div className='col-span-full border-b border-neutral-200' />
-      </div>
+          <div className='col-span-full border-b border-neutral-200' />
+        </div>
 
-      <div className='scrollbar grid grid-cols-[100px_150px_150px_100px_100px_minmax(200px,1fr)_100px_150px] items-center overflow-y-auto text-sm'>
-        <Row />
-        <Row />
-        <Row />
-        <Row />
-        <Row />
-        <Row />
-        <Row />
+        <div className='scrollbar grid max-h-[calc(100vh-45px-12px-12px-38px)] grid-cols-[100px_150px_150px_100px_100px_minmax(200px,1fr)_150px_150px] items-center overflow-y-auto text-sm'>
+          <Row />
+          <Row />
+          <Row />
+          <Row />
+          <Row />
+          <Row />
+          <Row />
+        </div>
       </div>
     </div>
   )
