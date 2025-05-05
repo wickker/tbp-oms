@@ -91,7 +91,22 @@ export const GetOrdersResponseSchema = z.object({
   orders: z.array(OrderSchema),
 })
 
+export const TransformedOrderSchema = z.object({
+  orderName: z.string().nullable(),
+  trackingId: z.string().nullable(),
+  customerName: z.string(),
+  createdAt: z.string().datetime().nullable(),
+  totalPrice: z.string(),
+  deliveryDate: z.string().datetime().nullable(),
+  fulfilmentStatus: z.string().nullable(),
+  deliveryMethod: z.string().nullable(),
+  status: z.string().nullable(),
+  items: z.string(),
+  discounts: z.string().nullable(),
+})
+
 export type Order = z.infer<typeof OrderSchema>
 export type ShopifyLineItem = z.infer<typeof ShopifyLineItemSchema>
 export type DiscountCode = z.infer<typeof DiscountCodeSchema>
+export type TransformedOrder = z.infer<typeof TransformedOrderSchema>
 export type GetOrdersResponse = z.infer<typeof GetOrdersResponseSchema>
