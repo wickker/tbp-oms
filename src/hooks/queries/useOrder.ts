@@ -5,6 +5,7 @@ import {
   convertDbTimestampToDisplayDate,
   parseDiscountsToDisplayString,
   parseLineItemsToDisplayString,
+  parseShippingAddressToDisplayString,
 } from '@/utils/functions'
 
 const useOrder = () => {
@@ -17,7 +18,7 @@ const useOrder = () => {
           return {
             orderName: order.order_name,
             trackingId: order.tracking_id,
-            customerName: `${order.customer_first_name} ${order.customer_last_name}`,
+            customerName: `${order.customer_first_name || ''} ${order.customer_last_name || ''}`,
             createdAt: convertDbTimestampToDisplayDate(order.created_at),
             totalPrice: `${order.currency} ${order.total_price}`,
             deliveryDate: convertDbTimestampToDisplayDate(order.delivery_date),
@@ -26,6 +27,7 @@ const useOrder = () => {
             status: order.financial_status,
             items: parseLineItemsToDisplayString(order.line_items),
             discounts: parseDiscountsToDisplayString(order.discount_codes),
+            shippingDetails: `${order.shipping_first_name || ''} ${order.shipping_last_name || ''}\n${parseShippingAddressToDisplayString(order)}`,
           }
         }),
     })

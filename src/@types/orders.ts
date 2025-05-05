@@ -103,6 +103,7 @@ export const TransformedOrderSchema = z.object({
   status: z.string().nullable(),
   items: z.string(),
   discounts: z.string().nullable(),
+  shippingDetails: z.string(),
 })
 
 export type Order = z.infer<typeof OrderSchema>

@@ -18,8 +18,7 @@ const Row = ({ order }: { order: TransformedOrder }) => {
     <>
       <Content>{order.orderName}</Content>
       <Content>{order.trackingId}</Content>
-      <Content>{order.customerName}</Content>
-      <Content>{order.createdAt}</Content>
+      <Content className='whitespace-pre-line'>{order.customerName}</Content>
       <Content>{order.totalPrice}</Content>
       <Content className='font-semibold whitespace-pre-line'>
         {order.items}
@@ -30,6 +29,9 @@ const Row = ({ order }: { order: TransformedOrder }) => {
       <Content>{order.deliveryDate}</Content>
       <Content>{order.fulfilmentStatus}</Content>
       <Content>{order.deliveryMethod}</Content>
+      <Content className='text-xs whitespace-pre-line'>
+        {order.shippingDetails}
+      </Content>
       <Content>
         <Button>Fulfill</Button>
       </Content>

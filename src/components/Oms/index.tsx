@@ -13,7 +13,7 @@ const Oms = () => {
 
         <RowsHeader />
 
-        <div className='scrollbar grid max-h-[calc(100vh-38px-12px-12px-64px)] w-full grid-cols-[90px_120px_150px_100px_100px_minmax(200px,1fr)_120px_100px_120px_120px_120px] items-center overflow-x-hidden overflow-y-auto text-sm'>
+        <div className='scrollbar grid max-h-[calc(100vh-38px-12px-12px-64px)] w-full grid-cols-[90px_120px_120px_100px_minmax(200px,1fr)_120px_100px_120px_120px_120px_150px] items-center overflow-x-hidden overflow-y-auto text-sm'>
           {getOrders.data?.map((order) => (
             <Row key={order.orderName} order={order} />
           ))}
