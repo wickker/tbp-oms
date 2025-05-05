@@ -1,5 +1,63 @@
 import { z } from 'zod'
 
+export const MoneySchema = z.object({
+  amount: z.string(),
+  currency_code: z.string(),
+})
+
+export const PriceSetSchema = z.object({
+  shop_money: MoneySchema,
+  presentment_money: MoneySchema,
+})
+
+export const DiscountAllocationSchema = z.object({
+  amount: z.string(),
+  amount_set: z.object({
+    shop_money: MoneySchema,
+    presentment_money: MoneySchema,
+  }),
+  discount_application_index: z.number(),
+})
+
+export const ShopifyLineItemSchema = z.object({
+  id: z.number(),
+  sku: z.string().nullable(),
+  name: z.string(),
+  grams: z.number(),
+  price: z.string(),
+  title: z.string(),
+  duties: z.array(z.any()),
+  vendor: z.string(),
+  taxable: z.boolean(),
+  quantity: z.number(),
+  gift_card: z.boolean(),
+  price_set: PriceSetSchema,
+  tax_lines: z.array(z.any()),
+  product_id: z.number(),
+  properties: z.array(z.any()),
+  variant_id: z.number(),
+  variant_title: z.string(),
+  product_exists: z.boolean(),
+  total_discount: z.string(),
+  current_quantity: z.number(),
+  attributed_staffs: z.array(z.any()),
+  requires_shipping: z.boolean(),
+  fulfillment_status: z.string().nullable(),
+  total_discount_set: PriceSetSchema,
+  fulfillment_service: z.string(),
+  admin_graphql_api_id: z.string(),
+  discount_allocations: z.array(DiscountAllocationSchema),
+  fulfillable_quantity: z.number(),
+  sales_line_item_group_id: z.string().nullable(),
+  variant_inventory_management: z.string(),
+})
+
+export const DiscountCodeSchema = z.object({
+  code: z.string(),
+  type: z.string(),
+  amount: z.string(),
+})
+
 export const OrderSchema = z.object({
   id: z.number().int(),
   order_id: z.number().int().nullable(),
@@ -7,7 +65,7 @@ export const OrderSchema = z.object({
   currency: z.string().nullable(),
   total_price: z.string().nullable(),
   total_discounts: z.string().nullable(),
-  discount_codes: z.string().nullable(), // json stringified
+  discount_codes: z.array(DiscountCodeSchema).nullable(),
   customer_id: z.number().int().nullable(),
   customer_first_name: z.string().nullable(),
   customer_last_name: z.string().nullable(),
@@ -19,7 +77,7 @@ export const OrderSchema = z.object({
   shipping_address2: z.string().nullable(),
   shipping_zip: z.string().nullable(),
   shipping_phone: z.string().nullable(),
-  line_items: z.string().nullable(), // json stringified
+  line_items: z.array(ShopifyLineItemSchema),
   financial_status: z.string().nullable(),
   fulfilment_status: z.string().nullable(),
   created_at: z.string().datetime().nullable(),
@@ -28,3 +86,12 @@ export const OrderSchema = z.object({
   delivery_date: z.string().datetime().nullable(),
   tracking_id: z.string().nullable(),
 })
+
+export const GetOrdersResponseSchema = z.object({
+  orders: z.array(OrderSchema),
+})
+
+export type Order = z.infer<typeof OrderSchema>
+export type ShopifyLineItem = z.infer<typeof ShopifyLineItemSchema>
+export type DiscountCode = z.infer<typeof DiscountCodeSchema>
+export type GetOrdersResponse = z.infer<typeof GetOrdersResponseSchema>
