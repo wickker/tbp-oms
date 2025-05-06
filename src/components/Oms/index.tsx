@@ -5,7 +5,7 @@ import RowsHeader from './RowsHeader'
 import Skeleton from './Skeleton'
 
 const colDimensions =
-  'grid-cols-[90px_120px_120px_100px_minmax(200px,1fr)_120px_100px_120px_120px_120px_150px]'
+  'grid-cols-[80px_100px_120px_100px_minmax(200px,1fr)_120px_100px_120px_140px_120px_140px]'
 
 const Oms = () => {
   const { useGetOrdersQuery } = useOrder()

@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils'
 const columnNames = [
   'Order ID',
   'Tracking ID',
-  'Customer\nName',
+  'Customer\nDetails',
   'Total',
   'Items',
   'Discounts',

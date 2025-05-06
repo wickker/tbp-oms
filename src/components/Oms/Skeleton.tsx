@@ -17,6 +17,7 @@ const SkeletonRow = () => (
       <div className='h-4 w-[80%] animate-pulse rounded-full bg-neutral-200' />
       <div className='h-4 w-[80%] animate-pulse rounded-full bg-neutral-200' />
       <div className='h-4 w-[60%] animate-pulse rounded-full bg-neutral-200' />
+      <div className='h-4 w-[60%] animate-pulse rounded-full bg-neutral-200' />
       <div className='h-4 w-[50%] animate-pulse rounded-full bg-neutral-200' />
     </div>
     <div className='m-3 h-4 w-[80%] animate-pulse rounded-full bg-neutral-200' />

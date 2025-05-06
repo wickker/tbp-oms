@@ -92,9 +92,12 @@ export const GetOrdersResponseSchema = z.object({
 })
 
 export const TransformedOrderSchema = z.object({
+  orderId: z.number().int().nullable(),
+  orderNumber: z.number(),
   orderName: z.string().nullable(),
   trackingId: z.string().nullable(),
   customerName: z.string(),
+  customerEmail: z.string(),
   createdAt: z.string().datetime().nullable(),
   totalPrice: z.string(),
   deliveryDate: z.string().datetime().nullable(),

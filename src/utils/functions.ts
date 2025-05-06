@@ -25,11 +25,14 @@ export const parseShippingAddressToDisplayString = (order: Order) => {
   if (order.shipping_address2) {
     address += `\n${order.shipping_address2}`
   }
-  // if (order.shipping_country_code) {
-  //   address += `\n${order.shipping_country_code}`
-  // }
   if (order.shipping_zip) {
     address += `\n${order.shipping_zip}`
   }
   return address
+}
+
+export const parseOrderNameToNumber = (orderName: string | null) => {
+  if (!orderName) return 0
+  const orderNumber = orderName.split('#')[1]
+  return orderNumber ? parseInt(orderNumber) : 0
 }

@@ -5,6 +5,7 @@ import {
   convertDbTimestampToDisplayDate,
   parseDiscountsToDisplayString,
   parseLineItemsToDisplayString,
+  parseOrderNameToNumber,
   parseShippingAddressToDisplayString,
 } from '@/utils/functions'
 
@@ -16,9 +17,12 @@ const useOrder = () => {
       select: (data): Array<TransformedOrder> =>
         data.orders.map((order) => {
           return {
+            orderId: order.order_id,
+            orderNumber: parseOrderNameToNumber(order.order_name),
             orderName: order.order_name,
             trackingId: order.tracking_id,
             customerName: `${order.customer_first_name || ''} ${order.customer_last_name || ''}`,
+            customerEmail: order.customer_email || '',
             createdAt: convertDbTimestampToDisplayDate(order.created_at),
             totalPrice: `${order.currency} ${order.total_price}`,
             deliveryDate: convertDbTimestampToDisplayDate(order.delivery_date),
@@ -27,7 +31,7 @@ const useOrder = () => {
             status: order.financial_status,
             items: parseLineItemsToDisplayString(order.line_items),
             discounts: parseDiscountsToDisplayString(order.discount_codes),
-            shippingDetails: `${order.shipping_first_name || ''} ${order.shipping_last_name || ''}\n${parseShippingAddressToDisplayString(order)}`,
+            shippingDetails: `${order.shipping_first_name || ''} ${order.shipping_last_name || ''}\n${order.shipping_phone || ''}\n${parseShippingAddressToDisplayString(order)}`,
           }
         }),
     })
