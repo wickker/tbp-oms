@@ -1,6 +1,7 @@
 import { PropsWithChildren } from 'react'
 import { TransformedOrder } from '@/@types/orders'
 import { Button } from '@/components/commons'
+import useOrder from '@/hooks/queries/useOrder'
 import { cn } from '@/lib/utils'
 import { DeliveryMethod, FulfillmemtStatus } from '@/utils/enums'
 
@@ -31,7 +32,14 @@ const Chip = ({ children, className }: ChipProps) => {
   )
 }
 
-const Row = ({ order }: { order: TransformedOrder }) => {
+type RowProps = {
+  order: TransformedOrder
+  token?: string
+}
+
+const Row = ({ order, token }: RowProps) => {
+  const { useGetNvOrderMutation } = useOrder()
+  const getNvOrder = useGetNvOrderMutation()
   const isFulfilled = order.fulfilmentStatus === FulfillmemtStatus.FULFILLED
 
   return (
@@ -45,7 +53,18 @@ const Row = ({ order }: { order: TransformedOrder }) => {
           {order.orderName}
         </a>
       </Content>
-      <Content className='text-xs'>{order.trackingId}</Content>
+      <Content className='text-xs'>
+        <button
+          onClick={() =>
+            getNvOrder.mutate({
+              trackingId: order.trackingId || '',
+              token: token || '',
+            })
+          }
+        >
+          {order.trackingId}
+        </button>
+      </Content>
       <Content className='whitespace-pre-line'>
         {order.customerName}
         <br />

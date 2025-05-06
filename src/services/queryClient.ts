@@ -9,7 +9,7 @@ const handleError = (err: AxiosError<AppError> | Error) => {
   //   return
   // }
   if (err instanceof AxiosError) {
-    toast.error(err.response?.data.message)
+    toast.error(err.message)
     return
   }
   toast.error(err.message)

@@ -1,4 +1,6 @@
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
+import axios from 'axios'
+import { DateTime } from 'luxon'
 import { TransformedOrder } from '@/@types/orders'
 import api from '@/services/api'
 import {
@@ -8,6 +10,47 @@ import {
   parseOrderNameToNumber,
   parseShippingAddressToDisplayString,
 } from '@/utils/functions'
+
+const getNvOrder = async ({
+  trackingId,
+  token,
+}: {
+  trackingId: string
+  token: string
+}) => {
+  const url =
+    'https://walrus.ninjavan.co/global/dash/1.0/orders/search?from=0&size=100&subshippers=true'
+  const now = DateTime.now()
+  const sixMonthsAgo = now.minus({ months: 6 })
+
+  return axios
+    .post(
+      url,
+      {
+        required_fields: [],
+        search_field: {
+          fields: ['tracking_id', 'to_contact', 'to_name', 'mps_tracking_id'],
+          match_type: 'full_text',
+          value: trackingId,
+        },
+        search_filters: [],
+        search_range: {
+          start_time: sixMonthsAgo.toFormat(`yyyy-MM-dd'T'HH:mm:ss'Z'`),
+          field: 'created_at',
+          end_time: now.toFormat(`yyyy-MM-dd'T'HH:mm:ss'Z'`),
+        },
+      },
+      {
+        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+          'x-nv-shipper-id': '10773018',
+        },
+      }
+    )
+    .then((res) => res.data)
+}
 
 const useOrder = () => {
   const useGetOrdersQuery = () =>
@@ -36,8 +79,15 @@ const useOrder = () => {
         }),
     })
 
+  const useGetNvOrderMutation = (onSuccess?: () => void) =>
+    useMutation({
+      mutationFn: getNvOrder,
+      onSuccess,
+    })
+
   return {
     useGetOrdersQuery,
+    useGetNvOrderMutation,
   }
 }
 
