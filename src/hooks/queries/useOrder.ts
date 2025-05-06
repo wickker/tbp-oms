@@ -3,6 +3,7 @@ import axios from 'axios'
 import { DateTime } from 'luxon'
 import { GetNvOrdersResponse } from '@/@types/nvOrders'
 import { TransformedOrder } from '@/@types/orders'
+import useAxiosConfig from '@/hooks/useAxiosConfig'
 import api from '@/services/api'
 import {
   convertDbTimestampToDisplayDate,
@@ -54,10 +55,13 @@ const getNvOrder = async ({
 }
 
 const useOrder = () => {
+  const { initConfig } = useAxiosConfig()
+
   const useGetOrdersQuery = () =>
     useQuery({
       queryKey: ['orders'],
-      queryFn: api.getOrders,
+      queryFn: api.getOrders(initConfig({ limit: 1000 })),
+      retry: false,
       select: (data): Array<TransformedOrder> =>
         data.orders.map((order) => {
           return {
@@ -85,6 +89,7 @@ const useOrder = () => {
   ) =>
     useMutation({
       mutationFn: getNvOrder,
+      retry: false,
       onSuccess,
     })
 

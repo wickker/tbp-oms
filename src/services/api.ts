@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, { AxiosRequestConfig } from 'axios'
 import { GetOrdersResponse } from '@/@types/orders'
 import Config from '@/configs'
 
@@ -7,11 +7,14 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
+  withCredentials: true,
 })
 
 // GET
-const getOrders = (): Promise<GetOrdersResponse> =>
-  api.get('/orders', { params: { limit: 1000 } }).then((res) => res.data)
+const getOrders =
+  (config: Promise<AxiosRequestConfig>) =>
+  async (): Promise<GetOrdersResponse> =>
+    api.get('/orders', await config).then((res) => res.data)
 
 export default {
   getOrders,

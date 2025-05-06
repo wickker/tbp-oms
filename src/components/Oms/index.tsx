@@ -1,16 +1,9 @@
 import { useMemo, useState, useCallback } from 'react'
 import { GetNvOrdersResponse } from '@/@types/nvOrders'
-import { Input } from '@/components/ui/input'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
 import useOrder from '@/hooks/queries/useOrder'
 import { cn } from '@/lib/utils'
 import { FulfillmemtStatus } from '@/utils/enums'
+import OptionsHeader from './OptionsHeader'
 import Row from './Row'
 import RowsHeader from './RowsHeader'
 import Skeleton from './Skeleton'
@@ -79,7 +72,11 @@ const Oms = () => {
     }
 
     if (!hasfilteredOrders) {
-      return <div className='col-span-full mx-auto py-5'>No orders found</div>
+      return (
+        <div className='col-span-full mx-auto py-5 text-sm'>
+          No orders found
+        </div>
+      )
     }
 
     return ordersDisplay
@@ -88,35 +85,12 @@ const Oms = () => {
   return (
     <div className='min-h-[100dvh] min-w-max overflow-y-hidden'>
       <div className='mx-auto flex max-w-[1450px] flex-col p-3'>
-        <div className='flex items-center justify-between gap-x-2 pb-3'>
-          <div className='flex flex-col gap-y-1'>
-            <label className='text-xs font-semibold text-neutral-500'>
-              Status
-            </label>
-            <Select value={status} onValueChange={setStatus}>
-              <SelectTrigger className='w-[130px]'>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value='all'>All</SelectItem>
-                <SelectItem value='fulfilled'>Fulfilled</SelectItem>
-                <SelectItem value='unfulfilled'>Unfulfilled</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div className='flex flex-col gap-y-1'>
-            <label className='text-xs font-semibold text-neutral-500'>
-              Dash Bearer Token
-            </label>
-            <Input
-              type='text'
-              value={token}
-              onChange={(e) => setToken(e.target.value)}
-              className='w-[250px] text-xs'
-            />
-          </div>
-        </div>
+        <OptionsHeader
+          token={token}
+          status={status}
+          onSelectChange={setStatus}
+          onTokenChange={setToken}
+        />
 
         <RowsHeader className={colDimensions} />
 
