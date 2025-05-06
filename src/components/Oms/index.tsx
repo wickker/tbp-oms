@@ -1,4 +1,5 @@
 import { useMemo, useState, useCallback } from 'react'
+import { AnimatePresence } from 'motion/react'
 import { GetNvOrdersResponse } from '@/@types/nvOrders'
 import useOrder from '@/hooks/queries/useOrder'
 import { cn } from '@/lib/utils'
@@ -8,16 +9,18 @@ import Row from './Row'
 import RowsHeader from './RowsHeader'
 import Skeleton from './Skeleton'
 
-const colDimensions =
-  'grid-cols-[80px_80px_120px_80px_minmax(200px,1fr)_100px_100px_120px_140px_120px_100px_140px]'
-
 const Oms = () => {
   const [token, setToken] = useState('')
   const [status, setStatus] = useState('unfulfilled')
   const { useGetOrdersQuery, useGetNvOrderMutation } = useOrder()
   const getOrders = useGetOrdersQuery()
   const getNvOrder = useGetNvOrderMutation(handleGetNvOrderSuccess)
+  const showTid = status !== 'unfulfilled'
+  const colDimensions = showTid
+    ? 'grid-cols-[80px_80px_120px_80px_minmax(200px,1fr)_100px_100px_120px_140px_120px_100px_140px]'
+    : 'grid-cols-[80px_120px_80px_minmax(200px,1fr)_100px_100px_120px_140px_120px_100px_140px]'
 
+  // derived state
   const orders = useMemo(() => getOrders.data || [], [getOrders.data])
   const filteredOrders = useMemo(() => {
     if (status === 'fulfilled')
@@ -45,7 +48,7 @@ const Oms = () => {
 
   const handleClickTrackingId = useCallback(
     (trackingId: string) => {
-      if (!trackingId || !token) return
+      if (!trackingId || !token.trim()) return
       getNvOrder.mutate({
         trackingId,
         token: token.trim(),
@@ -60,10 +63,14 @@ const Oms = () => {
         <Row
           key={order.orderName}
           order={order}
-          onClickNvTid={() => handleClickTrackingId(order.trackingId || '')}
+          onClickNvTid={
+            showTid
+              ? () => handleClickTrackingId(order.trackingId || '')
+              : undefined
+          }
         />
       )),
-    [handleClickTrackingId, filteredOrders]
+    [handleClickTrackingId, filteredOrders, showTid]
   )
 
   const renderOrders = () => {
@@ -90,9 +97,10 @@ const Oms = () => {
           status={status}
           onSelectChange={setStatus}
           onTokenChange={setToken}
+          isDisabled={getOrders.isFetching}
         />
 
-        <RowsHeader className={colDimensions} />
+        <RowsHeader className={colDimensions} showTid={showTid} />
 
         <div
           className={cn(
@@ -100,7 +108,7 @@ const Oms = () => {
             colDimensions
           )}
         >
-          {renderOrders()}
+          <AnimatePresence>{renderOrders()}</AnimatePresence>
         </div>
       </div>
     </div>

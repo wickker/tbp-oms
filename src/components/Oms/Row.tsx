@@ -1,4 +1,5 @@
 import { PropsWithChildren } from 'react'
+import { motion } from 'motion/react'
 import { TransformedOrder } from '@/@types/orders'
 import { Button } from '@/components/commons'
 import { cn } from '@/lib/utils'
@@ -10,7 +11,14 @@ type ContentProps = {
 
 const Content = ({ children, className }: ContentProps) => {
   return (
-    <div className={cn('p-3 text-sm break-words', className)}>{children}</div>
+    <motion.div
+      className={cn('p-3 text-sm break-words', className)}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+    >
+      {children}
+    </motion.div>
   )
 }
 
@@ -33,7 +41,7 @@ const Chip = ({ children, className }: ChipProps) => {
 
 type RowProps = {
   order: TransformedOrder
-  onClickNvTid: () => void
+  onClickNvTid?: () => void
 }
 
 const Row = ({ order, onClickNvTid }: RowProps) => {
@@ -50,14 +58,18 @@ const Row = ({ order, onClickNvTid }: RowProps) => {
           {order.orderName}
         </a>
       </Content>
-      <Content className='text-xs'>
-        <button
-          className='text-left break-all text-blue-500 underline'
-          onClick={onClickNvTid}
-        >
-          {order.trackingId}
-        </button>
-      </Content>
+
+      {onClickNvTid && (
+        <Content className='text-xs'>
+          <button
+            className='text-left break-all text-blue-500 underline'
+            onClick={onClickNvTid}
+          >
+            {order.trackingId}
+          </button>
+        </Content>
+      )}
+
       <Content className='whitespace-pre-line'>
         {order.customerName}
         <br />
@@ -65,14 +77,19 @@ const Row = ({ order, onClickNvTid }: RowProps) => {
           {order.customerEmail}
         </div>
       </Content>
+
       <Content>{order.totalPrice}</Content>
+
       <Content className='font-semibold whitespace-pre-line'>
         {order.items}
       </Content>
+
       <Content className='text-xs whitespace-pre-line'>
         {order.discounts}
       </Content>
+
       <Content className='text-xs font-semibold'>{order.deliveryDate}</Content>
+
       <Content>
         {isFulfilled ? (
           <Chip className='bg-[#D8FADB] text-green-600'>
@@ -84,6 +101,7 @@ const Row = ({ order, onClickNvTid }: RowProps) => {
           </Chip>
         )}
       </Content>
+
       <Content>
         {order.deliveryMethod === DeliveryMethod.NV_COLD_CHAIN ? (
           <Chip className='bg-[#DBDDFF] text-blue-600'>NV COLD CHAIN</Chip>
@@ -91,10 +109,13 @@ const Row = ({ order, onClickNvTid }: RowProps) => {
           <Chip className='bg-zinc-300 text-zinc-600'>SELF PICKUP</Chip>
         )}
       </Content>
+
       <Content className='text-xs whitespace-pre-line'>
         {order.shippingDetails}
       </Content>
+
       <Content className='text-xs'>{order.createdAt}</Content>
+
       <Content>
         {!isFulfilled ? (
           <Button size='sm'>Fulfill</Button>

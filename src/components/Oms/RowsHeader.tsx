@@ -35,14 +35,20 @@ const ColumnName = ({ children, className }: ColumnNameProps) => {
 
 type RowsHeaderProps = {
   className?: string
+  showTid: boolean
 }
 
-const RowsHeader = ({ className }: RowsHeaderProps) => {
+const RowsHeader = ({ className, showTid }: RowsHeaderProps) => {
   return (
     <div className={cn('grid h-[64px] w-full items-center', className)}>
-      {columnNames.map((columnName, index) => (
+      <ColumnName>{columnNames[0]}</ColumnName>
+
+      {showTid && <ColumnName>{columnNames[1]}</ColumnName>}
+
+      {columnNames.slice(2, 12).map((columnName, index) => (
         <ColumnName key={index}>{columnName}</ColumnName>
       ))}
+
       <div className='col-span-full border-b border-neutral-200' />
     </div>
   )
