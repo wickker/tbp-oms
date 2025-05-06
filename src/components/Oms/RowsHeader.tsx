@@ -32,9 +32,13 @@ const ColumnName = ({ children, className }: ColumnNameProps) => {
   )
 }
 
-const RowsHeader = () => {
+type RowsHeaderProps = {
+  className?: string
+}
+
+const RowsHeader = ({ className }: RowsHeaderProps) => {
   return (
-    <div className='grid h-[64px] w-full grid-cols-[90px_120px_120px_100px_minmax(200px,1fr)_120px_100px_120px_120px_120px_150px] items-center'>
+    <div className={cn('grid h-[64px] w-full items-center', className)}>
       {columnNames.map((columnName, index) => (
         <ColumnName key={index}>{columnName}</ColumnName>
       ))}
