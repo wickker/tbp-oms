@@ -1,6 +1,7 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 import { DateTime } from 'luxon'
+import { GetNvOrdersResponse } from '@/@types/nvOrders'
 import { TransformedOrder } from '@/@types/orders'
 import api from '@/services/api'
 import {
@@ -17,7 +18,7 @@ const getNvOrder = async ({
 }: {
   trackingId: string
   token: string
-}) => {
+}): Promise<GetNvOrdersResponse> => {
   const url =
     'https://walrus.ninjavan.co/global/dash/1.0/orders/search?from=0&size=100&subshippers=true'
   const now = DateTime.now()
@@ -79,7 +80,9 @@ const useOrder = () => {
         }),
     })
 
-  const useGetNvOrderMutation = (onSuccess?: () => void) =>
+  const useGetNvOrderMutation = (
+    onSuccess?: (data: GetNvOrdersResponse) => void
+  ) =>
     useMutation({
       mutationFn: getNvOrder,
       onSuccess,

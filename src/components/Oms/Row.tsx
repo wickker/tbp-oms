@@ -1,4 +1,5 @@
 import { PropsWithChildren } from 'react'
+import { GetNvOrdersResponse } from '@/@types/nvOrders'
 import { TransformedOrder } from '@/@types/orders'
 import { Button } from '@/components/commons'
 import useOrder from '@/hooks/queries/useOrder'
@@ -39,8 +40,27 @@ type RowProps = {
 
 const Row = ({ order, token }: RowProps) => {
   const { useGetNvOrderMutation } = useOrder()
-  const getNvOrder = useGetNvOrderMutation()
+  const getNvOrder = useGetNvOrderMutation(handleGetNvOrderSuccess)
   const isFulfilled = order.fulfilmentStatus === FulfillmemtStatus.FULFILLED
+
+  function handleGetNvOrderSuccess(data: GetNvOrdersResponse) {
+    if (data.total === 0) return
+    const order = data.search_data[0].order
+    if (order && order.id) {
+      window.open(
+        `https://dashboard.ninjavan.co/home/order/${order.id}`,
+        '_blank'
+      )
+    }
+  }
+
+  const handleClickTrackingId = () => {
+    if (!order.trackingId || !token) return
+    getNvOrder.mutate({
+      trackingId: order.trackingId,
+      token: token.trim(),
+    })
+  }
 
   return (
     <>
@@ -55,12 +75,8 @@ const Row = ({ order, token }: RowProps) => {
       </Content>
       <Content className='text-xs'>
         <button
-          onClick={() =>
-            getNvOrder.mutate({
-              trackingId: order.trackingId || '',
-              token: token || '',
-            })
-          }
+          className='break-all text-blue-500 underline'
+          onClick={handleClickTrackingId}
         >
           {order.trackingId}
         </button>
