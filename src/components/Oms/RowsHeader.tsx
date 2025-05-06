@@ -2,8 +2,8 @@ import { PropsWithChildren } from 'react'
 import { cn } from '@/lib/utils'
 
 const columnNames = [
-  'Order ID',
-  'Tracking ID',
+  'Order\nID',
+  'Tracking\nID',
   'Customer\nDetails',
   'Total',
   'Items',
@@ -12,6 +12,7 @@ const columnNames = [
   'Status',
   'Delivery\nMethod',
   'Shipping\nDetails',
+  'Created\nAt',
   'Actions',
 ]
 

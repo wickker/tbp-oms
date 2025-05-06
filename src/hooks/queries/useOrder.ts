@@ -24,7 +24,7 @@ const useOrder = () => {
             customerName: `${order.customer_first_name || ''} ${order.customer_last_name || ''}`,
             customerEmail: order.customer_email || '',
             createdAt: convertDbTimestampToDisplayDate(order.created_at),
-            totalPrice: `${order.currency} ${order.total_price}`,
+            totalPrice: `${order.total_price}`,
             deliveryDate: convertDbTimestampToDisplayDate(order.delivery_date),
             fulfilmentStatus: order.fulfilment_status,
             deliveryMethod: order.delivery_method,

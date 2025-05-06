@@ -60,7 +60,7 @@ const Row = ({ order }: { order: TransformedOrder }) => {
       <Content className='text-xs whitespace-pre-line'>
         {order.discounts}
       </Content>
-      <Content>{order.deliveryDate}</Content>
+      <Content className='text-xs font-semibold'>{order.deliveryDate}</Content>
       <Content>
         {isFulfilled ? (
           <Chip className='bg-[#D8FADB] text-green-600'>
@@ -82,11 +82,14 @@ const Row = ({ order }: { order: TransformedOrder }) => {
       <Content className='text-xs whitespace-pre-line'>
         {order.shippingDetails}
       </Content>
+      <Content className='text-xs'>{order.createdAt}</Content>
       <Content>
         {!isFulfilled ? (
           <Button size='sm'>Fulfill</Button>
         ) : (
-          <Button size='sm'>Print Label</Button>
+          <Button size='sm' variant='outline'>
+            Print Label
+          </Button>
         )}
       </Content>
 

@@ -5,7 +5,7 @@ import RowsHeader from './RowsHeader'
 import Skeleton from './Skeleton'
 
 const colDimensions =
-  'grid-cols-[80px_100px_120px_100px_minmax(200px,1fr)_120px_100px_120px_140px_120px_140px]'
+  'grid-cols-[80px_80px_120px_80px_minmax(200px,1fr)_100px_100px_120px_140px_120px_100px_140px]'
 
 const Oms = () => {
   const { useGetOrdersQuery } = useOrder()
@@ -27,7 +27,7 @@ const Oms = () => {
 
   return (
     <div className='min-h-[100dvh] min-w-max overflow-y-hidden'>
-      <div className='mx-auto flex max-w-[1400px] flex-col p-3'>
+      <div className='mx-auto flex max-w-[1450px] flex-col p-3'>
         <div className='flex h-[38px] gap-x-2 pb-3'></div>
 
         <RowsHeader className={colDimensions} />
