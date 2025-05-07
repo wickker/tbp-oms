@@ -1,5 +1,11 @@
+import { clsx, type ClassValue } from 'clsx'
 import { DateTime } from 'luxon'
+import { twMerge } from 'tailwind-merge'
 import { DiscountCode, Order, ShopifyLineItem } from '@/@types/orders'
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs))
+}
 
 export const convertDbTimestampToDisplayDate = (dbTimestamp: string | null) => {
   if (!dbTimestamp) return ''

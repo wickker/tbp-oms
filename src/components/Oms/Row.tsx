@@ -9,8 +9,8 @@ import {
 } from '@/@types/orders'
 import { Button } from '@/components/commons'
 import useOrder from '@/hooks/queries/useOrder'
-import { cn } from '@/lib/utils'
 import { DeliveryMethod, FulfillmemtStatus } from '@/utils/enums'
+import { cn } from '@/utils/functions'
 import { getPrintTemplate } from './utils'
 
 type ContentProps = {

@@ -4,10 +4,6 @@ import { AxiosError } from 'axios'
 import { AppError } from '@/@types/commons'
 
 const handleError = (err: AxiosError<AppError> | Error) => {
-  // if (err instanceof AxiosError && err.status === 401) {
-  //   redirectToLogin()
-  //   return
-  // }
   if (err instanceof AxiosError) {
     toast.error(err.message)
     return
