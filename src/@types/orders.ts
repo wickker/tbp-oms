@@ -85,6 +85,7 @@ export const OrderSchema = z.object({
   delivery_method: z.string().nullable(),
   delivery_date: z.string().datetime().nullable(),
   tracking_id: z.string().nullable(),
+  pickup_date: z.string().datetime().nullable(),
 })
 
 export const GetOrdersResponseSchema = z.object({
@@ -132,6 +133,7 @@ export const PrintTemplateDataSchema = z.object({
   shipping_address1: z.string(),
   shipping_address2: z.string(),
   special_instructions: z.string(),
+  pickup_date: z.string(),
   variant_1: z.string(),
   variant_2: z.string(),
   variant_3: z.string(),

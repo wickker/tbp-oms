@@ -7,7 +7,6 @@ A modern web application for managing orders for The Bon Pet company. This syste
 - **User Authentication**: Secure login using Clerk
 - **Order Management**: View, filter, and sort orders
 - **Delivery Tracking**: Integration with Ninja Van for tracking orders
-- **Responsive UI**: Built with React and Tailwind CSS
 - **Search Functionality**: Quick search across order data
 
 ## Tech Stack

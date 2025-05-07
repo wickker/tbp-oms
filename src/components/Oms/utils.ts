@@ -27,6 +27,7 @@ export const getPrintTemplate = (
     shipping_contact_number: orderFound.shipping_phone || '',
     shipping_address1: orderFound.shipping_address1 || '',
     shipping_address2: orderFound.shipping_address2 || '',
+    pickup_date: convertDbTimestampToPrintDate(orderFound.pickup_date) || '',
     special_instructions: '', // TODO: Ask Shaun
     variant_1: '',
     variant_2: '',
