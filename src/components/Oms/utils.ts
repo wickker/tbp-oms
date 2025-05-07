@@ -1,5 +1,10 @@
 import { QueryClient } from '@tanstack/react-query'
-import { GetOrdersResponse, PrintTemplateData } from '@/@types/orders'
+import {
+  GetOrdersResponse,
+  PrintTemplateData,
+  TransformedOrder,
+} from '@/@types/orders'
+import { DeliveryMethod, FulfillmemtStatus } from '@/utils/enums'
 import { convertDbTimestampToPrintDate } from '@/utils/functions'
 
 export const getPrintTemplate = (
@@ -41,4 +46,29 @@ export const getPrintTemplate = (
       `${item.quantity} x ${item.name}`
   }
   return template
+}
+
+export const applyFiltersAndSort = (
+  orders: Array<TransformedOrder>,
+  status: string,
+  deliveryMethod: string
+): Array<TransformedOrder> => {
+  let filteredOrders = orders
+  if (status === 'fulfilled')
+    filteredOrders = orders.filter(
+      (order) => order.fulfilmentStatus === FulfillmemtStatus.FULFILLED
+    )
+  if (status === 'unfulfilled')
+    filteredOrders = orders.filter(
+      (order) => order.fulfilmentStatus === FulfillmemtStatus.UNFULFILLED
+    )
+  if (deliveryMethod === 'ninja_cold')
+    filteredOrders = filteredOrders.filter(
+      (order) => order.deliveryMethod === DeliveryMethod.NV_COLD_CHAIN
+    )
+  if (deliveryMethod === 'self_pickup')
+    filteredOrders = filteredOrders.filter(
+      (order) => order.deliveryMethod === DeliveryMethod.SELF_COLLECTION
+    )
+  return filteredOrders
 }

@@ -3,15 +3,16 @@ import { AnimatePresence } from 'motion/react'
 import { GetNvOrdersResponse } from '@/@types/nvOrders'
 import useOrder from '@/hooks/queries/useOrder'
 import { cn } from '@/lib/utils'
-import { FulfillmemtStatus } from '@/utils/enums'
 import OptionsHeader from './OptionsHeader'
 import Row from './Row'
 import RowsHeader from './RowsHeader'
 import Skeleton from './Skeleton'
+import { applyFiltersAndSort } from './utils'
 
 const Oms = () => {
   const [token, setToken] = useState('')
   const [status, setStatus] = useState('unfulfilled')
+  const [deliveryMethod, setDeliveryMethod] = useState('all')
   const { useGetOrdersQuery, useGetNvOrderMutation } = useOrder()
   const getOrders = useGetOrdersQuery()
   const getNvOrder = useGetNvOrderMutation(handleGetNvOrderSuccess)
@@ -22,17 +23,10 @@ const Oms = () => {
 
   // derived state
   const orders = useMemo(() => getOrders.data || [], [getOrders.data])
-  const filteredOrders = useMemo(() => {
-    if (status === 'fulfilled')
-      return orders.filter(
-        (order) => order.fulfilmentStatus === FulfillmemtStatus.FULFILLED
-      )
-    if (status === 'unfulfilled')
-      return orders.filter(
-        (order) => order.fulfilmentStatus === FulfillmemtStatus.UNFULFILLED
-      )
-    return orders
-  }, [orders, status])
+  const filteredOrders = useMemo(
+    () => applyFiltersAndSort(orders, status, deliveryMethod),
+    [orders, status, deliveryMethod]
+  )
   const hasfilteredOrders = filteredOrders.length > 0 && !getOrders.isFetching
 
   function handleGetNvOrderSuccess(data: GetNvOrdersResponse) {
@@ -98,6 +92,8 @@ const Oms = () => {
           onSelectChange={setStatus}
           onTokenChange={setToken}
           isDisabled={getOrders.isFetching}
+          deliveryMethod={deliveryMethod}
+          onDeliveryMethodChange={setDeliveryMethod}
         />
 
         <RowsHeader className={colDimensions} showTid={showTid} />

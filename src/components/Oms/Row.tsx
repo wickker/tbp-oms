@@ -1,4 +1,4 @@
-import { PropsWithChildren } from 'react'
+import { memo, PropsWithChildren } from 'react'
 import { toast } from 'react-toastify'
 import { useQueryClient } from '@tanstack/react-query'
 import { motion } from 'motion/react'
@@ -52,7 +52,7 @@ type RowProps = {
   onClickNvTid?: () => void
 }
 
-const Row = ({ order, onClickNvTid }: RowProps) => {
+const Row = memo(({ order, onClickNvTid }: RowProps) => {
   const queryClient = useQueryClient()
   const { useFulfillOrderMutation, usePrintOrderMutation } = useOrder()
   const fulfillOrder = useFulfillOrderMutation(handleFulfillOrderSuccess)
@@ -198,6 +198,6 @@ const Row = ({ order, onClickNvTid }: RowProps) => {
       <div className='col-span-full border-b border-neutral-200' />
     </>
   )
-}
+})
 
 export default Row
