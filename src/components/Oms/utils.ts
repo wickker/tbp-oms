@@ -2,7 +2,10 @@ import { QueryClient } from '@tanstack/react-query'
 import { GetOrdersResponse, PrintTemplateData } from '@/@types/orders'
 import { convertDbTimestampToPrintDate } from '@/utils/functions'
 
-export const getPrintTemplate = (queryClient: QueryClient, orderId: number) => {
+export const getPrintTemplate = (
+  queryClient: QueryClient,
+  orderId: number
+): PrintTemplateData | undefined => {
   const orders: GetOrdersResponse | undefined = queryClient.getQueryData([
     'orders',
   ])

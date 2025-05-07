@@ -11,6 +11,7 @@ import { Button } from '@/components/commons'
 import useOrder from '@/hooks/queries/useOrder'
 import { cn } from '@/lib/utils'
 import { DeliveryMethod, FulfillmemtStatus } from '@/utils/enums'
+import { getPrintTemplate } from './utils'
 
 type ContentProps = {
   className?: string
@@ -53,9 +54,14 @@ type RowProps = {
 
 const Row = ({ order, onClickNvTid }: RowProps) => {
   const queryClient = useQueryClient()
-  const { useFulfillOrderMutation } = useOrder()
+  const { useFulfillOrderMutation, usePrintOrderMutation } = useOrder()
   const fulfillOrder = useFulfillOrderMutation(handleFulfillOrderSuccess)
+  const printOrder = usePrintOrderMutation(handlePrintOrderSuccess)
   const isFulfilled = order.fulfilmentStatus === FulfillmemtStatus.FULFILLED
+
+  function handlePrintOrderSuccess() {
+    toast.success(`Printed label for order ${order.orderName}`)
+  }
 
   function handleFulfillOrderSuccess(data: FulfillOrderResponse) {
     if (data.success) {
@@ -74,11 +80,21 @@ const Row = ({ order, onClickNvTid }: RowProps) => {
           ),
         }
       })
-      // TODO: Print label
+      handlePrintOrder()
       return
     }
 
     toast.error(data.message)
+  }
+
+  const handlePrintOrder = () => {
+    if (!order.orderId) return
+    const template = getPrintTemplate(queryClient, order.orderId)
+    if (!template) return
+    printOrder.mutate({
+      template_file: 'cold_100x150.zpl.j2',
+      template_data: template,
+    })
   }
 
   const handleFulfillOrder = () => {
@@ -168,7 +184,12 @@ const Row = ({ order, onClickNvTid }: RowProps) => {
             Fulfill
           </Button>
         ) : (
-          <Button size='sm' variant='outline'>
+          <Button
+            size='sm'
+            variant='outline'
+            onClick={handlePrintOrder}
+            isLoading={printOrder.isPending}
+          >
             Print Label
           </Button>
         )}

@@ -1,6 +1,4 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
-import axios from 'axios'
-import { DateTime } from 'luxon'
 import { GetNvOrdersResponse } from '@/@types/nvOrders'
 import { FulfillOrderResponse, TransformedOrder } from '@/@types/orders'
 import useAxiosConfig from '@/hooks/useAxiosConfig'
@@ -13,49 +11,6 @@ import {
   parseShippingAddressToDisplayString,
 } from '@/utils/functions'
 
-// Utils
-const getNvOrder = async ({
-  trackingId,
-  token,
-}: {
-  trackingId: string
-  token: string
-}): Promise<GetNvOrdersResponse> => {
-  const url =
-    'https://walrus.ninjavan.co/global/dash/1.0/orders/search?from=0&size=100&subshippers=true'
-  const now = DateTime.now()
-  const sixMonthsAgo = now.minus({ months: 6 })
-
-  return axios
-    .post(
-      url,
-      {
-        required_fields: [],
-        search_field: {
-          fields: ['tracking_id', 'to_contact', 'to_name', 'mps_tracking_id'],
-          match_type: 'full_text',
-          value: trackingId,
-        },
-        search_filters: [],
-        search_range: {
-          start_time: sixMonthsAgo.toFormat(`yyyy-MM-dd'T'HH:mm:ss'Z'`),
-          field: 'created_at',
-          end_time: now.toFormat(`yyyy-MM-dd'T'HH:mm:ss'Z'`),
-        },
-      },
-      {
-        withCredentials: true,
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-          'x-nv-shipper-id': '10773018',
-        },
-      }
-    )
-    .then((res) => res.data)
-}
-
-// Hook
 const useOrder = () => {
   const { initConfig } = useAxiosConfig()
 
@@ -87,10 +42,10 @@ const useOrder = () => {
     })
 
   const useGetNvOrderMutation = (
-    onSuccess?: (data: GetNvOrdersResponse) => void
+    onSuccess: (data: GetNvOrdersResponse) => void
   ) =>
     useMutation({
-      mutationFn: getNvOrder,
+      mutationFn: api.getNvOrder,
       retry: false,
       onSuccess,
     })
@@ -104,10 +59,18 @@ const useOrder = () => {
       onSuccess,
     })
 
+  const usePrintOrderMutation = (onSuccess?: () => void) =>
+    useMutation({
+      mutationFn: api.printLabel,
+      retry: false,
+      onSuccess,
+    })
+
   return {
     useGetOrdersQuery,
     useGetNvOrderMutation,
     useFulfillOrderMutation,
+    usePrintOrderMutation,
   }
 }
 

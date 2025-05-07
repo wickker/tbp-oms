@@ -11,7 +11,10 @@ interface ButtonProps
 }
 const Button = ({ isLoading, children, ...props }: ButtonProps) => {
   return (
-    <ShadcnButton {...props}>
+    <ShadcnButton
+      {...props}
+      className='hover:cursor-pointer disabled:hover:cursor-not-allowed'
+    >
       {isLoading && <RiLoader4Line className='animate-spin' />}
       {children}
     </ShadcnButton>
