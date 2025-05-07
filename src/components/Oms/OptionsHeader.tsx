@@ -1,4 +1,6 @@
 import { SignOutButton } from '@clerk/clerk-react'
+import { IoInformationCircle } from 'react-icons/io5'
+import { Button } from '@/components/commons'
 import { Input } from '@/components/ui/input'
 import {
   Select,
@@ -7,7 +9,38 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { Button } from '../commons'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
+
+const DashTooltip = () => {
+  return (
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger>
+          <IoInformationCircle className='h-4 w-4' />
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>Input token for tracking ID links to Dash to work.</p>
+          <p>
+            You will also need{' '}
+            <a
+              target='_blank'
+              href='https://chromewebstore.google.com/detail/cors-unblock/lfhmikememgdcahcdlaciloancbhjino?hl=en'
+              className='hover:cursor-pointer hover:underline'
+            >
+              CORS Unblock Chrome extension
+            </a>
+            .
+          </p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
+  )
+}
 
 type OptionsHeaderProps = {
   status: string
@@ -24,6 +57,8 @@ const OptionsHeader = ({
   onTokenChange,
   isDisabled,
 }: OptionsHeaderProps) => {
+  const showTid = status !== 'unfulfilled'
+
   return (
     <div className='flex items-center justify-between pb-3'>
       <div className='flex items-center gap-x-2'>
@@ -47,18 +82,21 @@ const OptionsHeader = ({
           </Select>
         </div>
 
-        <div className='flex flex-col gap-y-1'>
-          <label className='text-xs font-semibold text-neutral-500'>
-            Dash Bearer Token
-          </label>
-          <Input
-            type='text'
-            value={token}
-            onChange={(e) => onTokenChange(e.target.value)}
-            className='w-[250px] text-xs'
-            disabled={isDisabled}
-          />
-        </div>
+        {showTid && (
+          <div className='flex flex-col gap-y-1'>
+            <label className='flex items-center gap-x-1 text-xs font-semibold text-neutral-500'>
+              Dash Bearer Token
+              <DashTooltip />
+            </label>
+            <Input
+              type='text'
+              value={token}
+              onChange={(e) => onTokenChange(e.target.value)}
+              className='w-[250px] text-xs'
+              disabled={isDisabled}
+            />
+          </div>
+        )}
       </div>
 
       <SignOutButton>
