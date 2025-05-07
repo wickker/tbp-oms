@@ -58,7 +58,6 @@ const Row = ({ order, onClickNvTid }: RowProps) => {
   const isFulfilled = order.fulfilmentStatus === FulfillmemtStatus.FULFILLED
 
   function handleFulfillOrderSuccess(data: FulfillOrderResponse) {
-    console.log('Data : ', data)
     if (data.success) {
       toast.success(data.message)
       queryClient.setQueryData(['orders'], (old: GetOrdersResponse) => {
@@ -75,6 +74,7 @@ const Row = ({ order, onClickNvTid }: RowProps) => {
           ),
         }
       })
+      // TODO: Print label
       return
     }
 

@@ -13,6 +13,7 @@ import {
   parseShippingAddressToDisplayString,
 } from '@/utils/functions'
 
+// Utils
 const getNvOrder = async ({
   trackingId,
   token,
@@ -54,6 +55,7 @@ const getNvOrder = async ({
     .then((res) => res.data)
 }
 
+// Hook
 const useOrder = () => {
   const { initConfig } = useAxiosConfig()
 

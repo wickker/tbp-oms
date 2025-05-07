@@ -122,10 +122,35 @@ export const TransformedOrderSchema = z.object({
   shippingDetails: z.string(),
 })
 
+export const PrintTemplateDataSchema = z.object({
+  delivery_date: z.string(),
+  tracking_id: z.string(),
+  order_id: z.string(),
+  shipping_first_name: z.string(),
+  shipping_last_name: z.string(),
+  shipping_contact_number: z.string(),
+  shipping_address1: z.string(),
+  shipping_address2: z.string(),
+  special_instructions: z.string(),
+  variant_1: z.string(),
+  variant_2: z.string(),
+  variant_3: z.string(),
+  variant_4: z.string(),
+  variant_5: z.string(),
+  variant_6: z.string(),
+})
+
+export const PrintLabelRequestSchema = z.object({
+  template_file: z.string(),
+  template_data: PrintTemplateDataSchema,
+})
+
 export type Order = z.infer<typeof OrderSchema>
 export type ShopifyLineItem = z.infer<typeof ShopifyLineItemSchema>
 export type DiscountCode = z.infer<typeof DiscountCodeSchema>
 export type TransformedOrder = z.infer<typeof TransformedOrderSchema>
+export type PrintTemplateData = z.infer<typeof PrintTemplateDataSchema>
 export type GetOrdersResponse = z.infer<typeof GetOrdersResponseSchema>
 export type FulfillOrderRequest = z.infer<typeof FulfillOrderRequestSchema>
 export type FulfillOrderResponse = z.infer<typeof FulfillOrderResponseSchema>
+export type PrintLabelRequest = z.infer<typeof PrintLabelRequestSchema>

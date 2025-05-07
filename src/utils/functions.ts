@@ -7,6 +7,12 @@ export const convertDbTimestampToDisplayDate = (dbTimestamp: string | null) => {
   return DateTime.fromJSDate(date).toFormat('d MMM yyyy')
 }
 
+export const convertDbTimestampToPrintDate = (dbTimestamp: string | null) => {
+  if (!dbTimestamp) return ''
+  const date = new Date(dbTimestamp)
+  return DateTime.fromJSDate(date).toFormat('yyyy-MM-dd')
+}
+
 export const parseLineItemsToDisplayString = (
   lineItems: Array<ShopifyLineItem>
 ) => {
