@@ -13,8 +13,10 @@ const Oms = () => {
   const [token, setToken] = useState('')
   const [status, setStatus] = useState('unfulfilled')
   const [deliveryMethod, setDeliveryMethod] = useState('all')
+  const [sortBy, setSortBy] = useState('order_id_desc')
   const { useGetOrdersQuery, useGetNvOrderMutation } = useOrder()
   const [isStatusChangePending, startStatusChangeTransition] = useTransition()
+  const [isSortByChangePending, startSortByChangeTransition] = useTransition()
   const [isDeliveryMethodChangePending, startDeliveryMethodChangeTransition] =
     useTransition()
   const getOrders = useGetOrdersQuery()
@@ -27,20 +29,20 @@ const Oms = () => {
     : 'grid-cols-[80px_120px_80px_minmax(200px,1fr)_100px_100px_120px_140px_120px_100px_140px]'
   const orders = useMemo(() => getOrders.data || [], [getOrders.data])
   const filteredOrders = useMemo(
-    () => applyFiltersAndSort(orders, status, deliveryMethod),
-    [orders, status, deliveryMethod]
+    () => applyFiltersAndSort(orders, status, deliveryMethod, sortBy),
+    [orders, status, deliveryMethod, sortBy]
   )
   const hasfilteredOrders =
     filteredOrders.length > 0 &&
     !getOrders.isFetching &&
     !isStatusChangePending &&
-    !isDeliveryMethodChangePending
+    !isDeliveryMethodChangePending &&
+    !isSortByChangePending
   const isOrdersLoading =
     getOrders.isFetching ||
     isStatusChangePending ||
-    isDeliveryMethodChangePending
-
-  console.log(filteredOrders)
+    isDeliveryMethodChangePending ||
+    isSortByChangePending
 
   function handleGetNvOrderSuccess(data: GetNvOrdersResponse) {
     if (data.total === 0) return
@@ -73,6 +75,12 @@ const Oms = () => {
   const handleDeliveryMethodChange = (deliveryMethod: string) => {
     startDeliveryMethodChangeTransition(() => {
       setDeliveryMethod(deliveryMethod)
+    })
+  }
+
+  const handleSortByChange = (sortBy: string) => {
+    startSortByChangeTransition(() => {
+      setSortBy(sortBy)
     })
   }
 
@@ -119,6 +127,8 @@ const Oms = () => {
           isDisabled={getOrders.isFetching}
           deliveryMethod={deliveryMethod}
           onDeliveryMethodChange={handleDeliveryMethodChange}
+          sortBy={sortBy}
+          onSortByChange={handleSortByChange}
         />
 
         <RowsHeader className={colDimensions} showTid={showTid} />

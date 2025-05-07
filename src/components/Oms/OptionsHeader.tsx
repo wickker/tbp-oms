@@ -1,4 +1,5 @@
 import { SignOutButton } from '@clerk/clerk-react'
+import { AnimatePresence, motion } from 'motion/react'
 import { IoInformationCircle } from 'react-icons/io5'
 import { Button } from '@/components/commons'
 import { Input } from '@/components/ui/input'
@@ -50,6 +51,8 @@ type OptionsHeaderProps = {
   isDisabled: boolean
   deliveryMethod: string
   onDeliveryMethodChange: (deliveryMethod: string) => void
+  sortBy: string
+  onSortByChange: (sortBy: string) => void
 }
 
 const OptionsHeader = ({
@@ -60,12 +63,39 @@ const OptionsHeader = ({
   isDisabled,
   deliveryMethod,
   onDeliveryMethodChange,
+  sortBy,
+  onSortByChange,
 }: OptionsHeaderProps) => {
   const showTid = status !== 'unfulfilled'
 
   return (
     <div className='flex items-center justify-between pb-3'>
       <div className='flex items-center gap-x-2'>
+        <div className='flex flex-col gap-y-1'>
+          <label className='text-xs font-semibold text-neutral-500'>
+            Sort By
+          </label>
+          <Select
+            value={sortBy}
+            onValueChange={onSortByChange}
+            disabled={isDisabled}
+          >
+            <SelectTrigger className='w-[230px]'>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value='order_id_asc'>Order ID (Asc)</SelectItem>
+              <SelectItem value='order_id_desc'>Order ID (Desc)</SelectItem>
+              <SelectItem value='delivery_date_desc'>
+                Delivery Date (Latest First)
+              </SelectItem>
+              <SelectItem value='delivery_date_asc'>
+                Delivery Date (Oldest First)
+              </SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
         <div className='flex flex-col gap-y-1'>
           <label className='text-xs font-semibold text-neutral-500'>
             Status
@@ -106,21 +136,28 @@ const OptionsHeader = ({
           </Select>
         </div>
 
-        {showTid && (
-          <div className='flex flex-col gap-y-1'>
-            <label className='flex items-center gap-x-1 text-xs font-semibold text-neutral-500'>
-              Dash Bearer Token
-              <DashTooltip />
-            </label>
-            <Input
-              type='text'
-              value={token}
-              onChange={(e) => onTokenChange(e.target.value)}
-              className='w-[250px] text-xs'
-              disabled={isDisabled}
-            />
-          </div>
-        )}
+        <AnimatePresence>
+          {showTid && (
+            <motion.div
+              className='flex flex-col gap-y-1'
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            >
+              <label className='flex items-center gap-x-1 text-xs font-semibold text-neutral-500'>
+                Dash Bearer Token
+                <DashTooltip />
+              </label>
+              <Input
+                type='text'
+                value={token}
+                onChange={(e) => onTokenChange(e.target.value)}
+                className='w-[250px] text-xs'
+                disabled={isDisabled}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
       <SignOutButton>

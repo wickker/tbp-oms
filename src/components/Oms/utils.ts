@@ -51,7 +51,8 @@ export const getPrintTemplate = (
 export const applyFiltersAndSort = (
   orders: Array<TransformedOrder>,
   status: string,
-  deliveryMethod: string
+  deliveryMethod: string,
+  sortBy: string
 ): Array<TransformedOrder> => {
   let filteredOrders = orders
   if (status === 'fulfilled')
@@ -70,5 +71,33 @@ export const applyFiltersAndSort = (
     filteredOrders = filteredOrders.filter(
       (order) => order.deliveryMethod === DeliveryMethod.SELF_COLLECTION
     )
+  if (sortBy === 'order_id_desc') {
+    filteredOrders = filteredOrders.sort(
+      (a, b) => b.orderNumber - a.orderNumber
+    )
+  }
+  if (sortBy === 'order_id_asc') {
+    filteredOrders = filteredOrders.sort(
+      (a, b) => a.orderNumber - b.orderNumber
+    )
+  }
+  if (sortBy === 'delivery_date_asc') {
+    filteredOrders = filteredOrders.sort((a, b) => {
+      if (!a.deliveryDate) return -1
+      if (!b.deliveryDate) return 1
+      return (
+        new Date(a.deliveryDate).getTime() - new Date(b.deliveryDate).getTime()
+      )
+    })
+  }
+  if (sortBy === 'delivery_date_desc') {
+    filteredOrders = filteredOrders.sort((a, b) => {
+      if (!a.deliveryDate) return 1
+      if (!b.deliveryDate) return -1
+      return (
+        new Date(b.deliveryDate).getTime() - new Date(a.deliveryDate).getTime()
+      )
+    })
+  }
   return filteredOrders
 }
