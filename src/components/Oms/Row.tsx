@@ -1,7 +1,14 @@
 import { PropsWithChildren } from 'react'
+import { toast } from 'react-toastify'
+import { useQueryClient } from '@tanstack/react-query'
 import { motion } from 'motion/react'
-import { TransformedOrder } from '@/@types/orders'
+import {
+  FulfillOrderResponse,
+  GetOrdersResponse,
+  TransformedOrder,
+} from '@/@types/orders'
 import { Button } from '@/components/commons'
+import useOrder from '@/hooks/queries/useOrder'
 import { cn } from '@/lib/utils'
 import { DeliveryMethod, FulfillmemtStatus } from '@/utils/enums'
 
@@ -45,7 +52,42 @@ type RowProps = {
 }
 
 const Row = ({ order, onClickNvTid }: RowProps) => {
+  const queryClient = useQueryClient()
+  const { useFulfillOrderMutation } = useOrder()
+  const fulfillOrder = useFulfillOrderMutation(handleFulfillOrderSuccess)
   const isFulfilled = order.fulfilmentStatus === FulfillmemtStatus.FULFILLED
+
+  function handleFulfillOrderSuccess(data: FulfillOrderResponse) {
+    console.log('Data : ', data)
+    if (data.success) {
+      toast.success(data.message)
+      queryClient.setQueryData(['orders'], (old: GetOrdersResponse) => {
+        return {
+          ...old,
+          orders: old.orders.map((order) =>
+            order.order_id === data.order_id
+              ? {
+                  ...order,
+                  fulfilment_status: FulfillmemtStatus.FULFILLED,
+                  tracking_id: data.ninjavan_tracking_number,
+                }
+              : order
+          ),
+        }
+      })
+      return
+    }
+
+    toast.error(data.message)
+  }
+
+  const handleFulfillOrder = () => {
+    if (!order.orderId) return
+
+    fulfillOrder.mutate({
+      order_id: order.orderId,
+    })
+  }
 
   return (
     <>
@@ -118,7 +160,13 @@ const Row = ({ order, onClickNvTid }: RowProps) => {
 
       <Content>
         {!isFulfilled ? (
-          <Button size='sm'>Fulfill</Button>
+          <Button
+            size='sm'
+            onClick={handleFulfillOrder}
+            isLoading={fulfillOrder.isPending}
+          >
+            Fulfill
+          </Button>
         ) : (
           <Button size='sm' variant='outline'>
             Print Label

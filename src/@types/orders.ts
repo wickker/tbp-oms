@@ -91,6 +91,19 @@ export const GetOrdersResponseSchema = z.object({
   orders: z.array(OrderSchema),
 })
 
+export const FulfillOrderRequestSchema = z.object({
+  order_id: z.number().int(),
+})
+
+export const FulfillOrderResponseSchema = z.object({
+  success: z.boolean(),
+  message: z.string(),
+  ninjavan_tracking_number: z.string().nullable(),
+  order_id: z.number().int(),
+  shopify_fulfillment_created: z.boolean(),
+  shopify_fulfillment_id: z.string().nullable(),
+})
+
 export const TransformedOrderSchema = z.object({
   orderId: z.number().int().nullable(),
   orderNumber: z.number(),
@@ -114,3 +127,5 @@ export type ShopifyLineItem = z.infer<typeof ShopifyLineItemSchema>
 export type DiscountCode = z.infer<typeof DiscountCodeSchema>
 export type TransformedOrder = z.infer<typeof TransformedOrderSchema>
 export type GetOrdersResponse = z.infer<typeof GetOrdersResponseSchema>
+export type FulfillOrderRequest = z.infer<typeof FulfillOrderRequestSchema>
+export type FulfillOrderResponse = z.infer<typeof FulfillOrderResponseSchema>

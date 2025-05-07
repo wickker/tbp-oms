@@ -2,7 +2,7 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 import { DateTime } from 'luxon'
 import { GetNvOrdersResponse } from '@/@types/nvOrders'
-import { TransformedOrder } from '@/@types/orders'
+import { FulfillOrderResponse, TransformedOrder } from '@/@types/orders'
 import useAxiosConfig from '@/hooks/useAxiosConfig'
 import api from '@/services/api'
 import {
@@ -93,9 +93,19 @@ const useOrder = () => {
       onSuccess,
     })
 
+  const useFulfillOrderMutation = (
+    onSuccess: (data: FulfillOrderResponse) => void
+  ) =>
+    useMutation({
+      mutationFn: api.fulfillOrder(initConfig()),
+      retry: false,
+      onSuccess,
+    })
+
   return {
     useGetOrdersQuery,
     useGetNvOrderMutation,
+    useFulfillOrderMutation,
   }
 }
 
