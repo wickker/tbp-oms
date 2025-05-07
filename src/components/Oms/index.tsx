@@ -1,5 +1,12 @@
-import { useMemo, useState, useCallback, useTransition } from 'react'
+import {
+  useMemo,
+  useState,
+  useCallback,
+  useTransition,
+  useDeferredValue,
+} from 'react'
 import { AnimatePresence } from 'motion/react'
+import { useDebounce } from 'use-debounce'
 import { GetNvOrdersResponse } from '@/@types/nvOrders'
 import useOrder from '@/hooks/queries/useOrder'
 import { cn } from '@/lib/utils'
@@ -14,11 +21,14 @@ const Oms = () => {
   const [status, setStatus] = useState('unfulfilled')
   const [deliveryMethod, setDeliveryMethod] = useState('all')
   const [sortBy, setSortBy] = useState('order_id_desc')
+  const [searchPhrase, setSearchPhrase] = useState('')
   const { useGetOrdersQuery, useGetNvOrderMutation } = useOrder()
   const [isStatusChangePending, startStatusChangeTransition] = useTransition()
   const [isSortByChangePending, startSortByChangeTransition] = useTransition()
   const [isDeliveryMethodChangePending, startDeliveryMethodChangeTransition] =
     useTransition()
+  const [debouncedSearchPhrase] = useDebounce(searchPhrase, 500)
+  const deferredSearchPhrase = useDeferredValue(debouncedSearchPhrase)
   const getOrders = useGetOrdersQuery()
   const getNvOrder = useGetNvOrderMutation(handleGetNvOrderSuccess)
 
@@ -29,8 +39,15 @@ const Oms = () => {
     : 'grid-cols-[80px_120px_80px_minmax(200px,1fr)_100px_100px_120px_140px_120px_100px_140px]'
   const orders = useMemo(() => getOrders.data || [], [getOrders.data])
   const filteredOrders = useMemo(
-    () => applyFiltersAndSort(orders, status, deliveryMethod, sortBy),
-    [orders, status, deliveryMethod, sortBy]
+    () =>
+      applyFiltersAndSort(
+        orders,
+        status,
+        deliveryMethod,
+        sortBy,
+        deferredSearchPhrase.trim()
+      ),
+    [orders, status, deliveryMethod, sortBy, deferredSearchPhrase]
   )
   const hasfilteredOrders =
     filteredOrders.length > 0 &&
@@ -129,6 +146,8 @@ const Oms = () => {
           onDeliveryMethodChange={handleDeliveryMethodChange}
           sortBy={sortBy}
           onSortByChange={handleSortByChange}
+          searchPhrase={searchPhrase}
+          onSearchPhraseChange={setSearchPhrase}
         />
 
         <RowsHeader className={colDimensions} showTid={showTid} />

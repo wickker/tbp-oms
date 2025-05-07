@@ -53,6 +53,8 @@ type OptionsHeaderProps = {
   onDeliveryMethodChange: (deliveryMethod: string) => void
   sortBy: string
   onSortByChange: (sortBy: string) => void
+  searchPhrase: string
+  onSearchPhraseChange: (searchPhrase: string) => void
 }
 
 const OptionsHeader = ({
@@ -65,6 +67,8 @@ const OptionsHeader = ({
   onDeliveryMethodChange,
   sortBy,
   onSortByChange,
+  searchPhrase,
+  onSearchPhraseChange,
 }: OptionsHeaderProps) => {
   const showTid = status !== 'unfulfilled'
 
@@ -134,6 +138,20 @@ const OptionsHeader = ({
               <SelectItem value='self_pickup'>Self Pickup</SelectItem>
             </SelectContent>
           </Select>
+        </div>
+
+        <div className='flex flex-col gap-y-1'>
+          <label className='text-xs font-semibold text-neutral-500'>
+            Search
+          </label>
+          <Input
+            placeholder='Input order ID, TID, customer name or email'
+            type='text'
+            value={searchPhrase}
+            onChange={(e) => onSearchPhraseChange(e.target.value)}
+            className='w-[350px] text-xs'
+            disabled={isDisabled}
+          />
         </div>
 
         <AnimatePresence>

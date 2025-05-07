@@ -52,9 +52,12 @@ export const applyFiltersAndSort = (
   orders: Array<TransformedOrder>,
   status: string,
   deliveryMethod: string,
-  sortBy: string
+  sortBy: string,
+  searchPhrase: string
 ): Array<TransformedOrder> => {
   let filteredOrders = orders
+
+  // filters
   if (status === 'fulfilled')
     filteredOrders = filteredOrders.filter(
       (order) => order.fulfilmentStatus === FulfillmemtStatus.FULFILLED
@@ -71,6 +74,21 @@ export const applyFiltersAndSort = (
     filteredOrders = filteredOrders.filter(
       (order) => order.deliveryMethod === DeliveryMethod.SELF_COLLECTION
     )
+
+  // search
+  if (searchPhrase) {
+    filteredOrders = filteredOrders.filter(
+      (order) =>
+        order.orderName?.includes(searchPhrase) ||
+        order.trackingId?.toLowerCase().includes(searchPhrase.toLowerCase()) ||
+        order.customerName
+          ?.toLowerCase()
+          .includes(searchPhrase.toLowerCase()) ||
+        order.customerEmail?.toLowerCase().includes(searchPhrase.toLowerCase())
+    )
+  }
+
+  // sorts
   if (sortBy === 'order_id_desc') {
     filteredOrders = filteredOrders.sort(
       (a, b) => b.orderNumber - a.orderNumber
