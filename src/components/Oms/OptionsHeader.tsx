@@ -44,7 +44,7 @@ const DashTooltip = () => {
 
 type OptionsHeaderProps = {
   status: string
-  onSelectChange: (status: string) => void
+  onStatusChange: (status: string) => void
   token: string
   onTokenChange: (token: string) => void
   isDisabled: boolean
@@ -54,7 +54,7 @@ type OptionsHeaderProps = {
 
 const OptionsHeader = ({
   status,
-  onSelectChange,
+  onStatusChange,
   token,
   onTokenChange,
   isDisabled,
@@ -72,7 +72,7 @@ const OptionsHeader = ({
           </label>
           <Select
             value={status}
-            onValueChange={onSelectChange}
+            onValueChange={onStatusChange}
             disabled={isDisabled}
           >
             <SelectTrigger className='w-[120px]'>

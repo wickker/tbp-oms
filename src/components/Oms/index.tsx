@@ -1,4 +1,4 @@
-import { useMemo, useState, useCallback } from 'react'
+import { useMemo, useState, useCallback, useTransition } from 'react'
 import { AnimatePresence } from 'motion/react'
 import { GetNvOrdersResponse } from '@/@types/nvOrders'
 import useOrder from '@/hooks/queries/useOrder'
@@ -14,20 +14,33 @@ const Oms = () => {
   const [status, setStatus] = useState('unfulfilled')
   const [deliveryMethod, setDeliveryMethod] = useState('all')
   const { useGetOrdersQuery, useGetNvOrderMutation } = useOrder()
+  const [isStatusChangePending, startStatusChangeTransition] = useTransition()
+  const [isDeliveryMethodChangePending, startDeliveryMethodChangeTransition] =
+    useTransition()
   const getOrders = useGetOrdersQuery()
   const getNvOrder = useGetNvOrderMutation(handleGetNvOrderSuccess)
+
+  // derived state
   const showTid = status !== 'unfulfilled'
   const colDimensions = showTid
     ? 'grid-cols-[80px_80px_120px_80px_minmax(200px,1fr)_100px_100px_120px_140px_120px_100px_140px]'
     : 'grid-cols-[80px_120px_80px_minmax(200px,1fr)_100px_100px_120px_140px_120px_100px_140px]'
-
-  // derived state
   const orders = useMemo(() => getOrders.data || [], [getOrders.data])
   const filteredOrders = useMemo(
     () => applyFiltersAndSort(orders, status, deliveryMethod),
     [orders, status, deliveryMethod]
   )
-  const hasfilteredOrders = filteredOrders.length > 0 && !getOrders.isFetching
+  const hasfilteredOrders =
+    filteredOrders.length > 0 &&
+    !getOrders.isFetching &&
+    !isStatusChangePending &&
+    !isDeliveryMethodChangePending
+  const isOrdersLoading =
+    getOrders.isFetching ||
+    isStatusChangePending ||
+    isDeliveryMethodChangePending
+
+  console.log(filteredOrders)
 
   function handleGetNvOrderSuccess(data: GetNvOrdersResponse) {
     if (data.total === 0) return
@@ -51,6 +64,18 @@ const Oms = () => {
     [token, getNvOrder]
   )
 
+  const handleStatusChange = (status: string) => {
+    startStatusChangeTransition(() => {
+      setStatus(status)
+    })
+  }
+
+  const handleDeliveryMethodChange = (deliveryMethod: string) => {
+    startDeliveryMethodChangeTransition(() => {
+      setDeliveryMethod(deliveryMethod)
+    })
+  }
+
   const ordersDisplay = useMemo(
     () =>
       filteredOrders.map((order) => (
@@ -68,7 +93,7 @@ const Oms = () => {
   )
 
   const renderOrders = () => {
-    if (getOrders.isFetching) {
+    if (isOrdersLoading) {
       return <Skeleton />
     }
 
@@ -89,11 +114,11 @@ const Oms = () => {
         <OptionsHeader
           token={token}
           status={status}
-          onSelectChange={setStatus}
+          onStatusChange={handleStatusChange}
           onTokenChange={setToken}
           isDisabled={getOrders.isFetching}
           deliveryMethod={deliveryMethod}
-          onDeliveryMethodChange={setDeliveryMethod}
+          onDeliveryMethodChange={handleDeliveryMethodChange}
         />
 
         <RowsHeader className={colDimensions} showTid={showTid} />

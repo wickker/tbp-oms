@@ -55,11 +55,11 @@ export const applyFiltersAndSort = (
 ): Array<TransformedOrder> => {
   let filteredOrders = orders
   if (status === 'fulfilled')
-    filteredOrders = orders.filter(
+    filteredOrders = filteredOrders.filter(
       (order) => order.fulfilmentStatus === FulfillmemtStatus.FULFILLED
     )
   if (status === 'unfulfilled')
-    filteredOrders = orders.filter(
+    filteredOrders = filteredOrders.filter(
       (order) => order.fulfilmentStatus === FulfillmemtStatus.UNFULFILLED
     )
   if (deliveryMethod === 'ninja_cold')

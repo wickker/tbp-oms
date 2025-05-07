@@ -23,7 +23,6 @@ const Content = ({ children, className }: ContentProps) => {
       className={cn('p-3 text-sm break-words', className)}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
     >
       {children}
     </motion.div>
@@ -161,9 +160,10 @@ const Row = memo(({ order, onClickNvTid }: RowProps) => {
       </Content>
 
       <Content>
-        {order.deliveryMethod === DeliveryMethod.NV_COLD_CHAIN ? (
+        {order.deliveryMethod === DeliveryMethod.NV_COLD_CHAIN && (
           <Chip className='bg-[#DBDDFF] text-blue-600'>NV COLD CHAIN</Chip>
-        ) : (
+        )}
+        {order.deliveryMethod === DeliveryMethod.SELF_COLLECTION && (
           <Chip className='bg-zinc-300 text-zinc-600'>SELF PICKUP</Chip>
         )}
       </Content>
@@ -195,7 +195,11 @@ const Row = memo(({ order, onClickNvTid }: RowProps) => {
         )}
       </Content>
 
-      <div className='col-span-full border-b border-neutral-200' />
+      <motion.div
+        className='col-span-full border-b border-neutral-200'
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+      />
     </>
   )
 })
