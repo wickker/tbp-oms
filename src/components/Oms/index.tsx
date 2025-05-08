@@ -61,8 +61,6 @@ const Oms = () => {
     isDeliveryMethodChangePending ||
     isSortByChangePending
 
-  console.log(filteredOrders)
-
   function handleGetNvOrderSuccess(data: GetNvOrdersResponse) {
     if (data.total === 0) return
     const order = data.search_data[0].order
