@@ -61,6 +61,8 @@ const Oms = () => {
     isDeliveryMethodChangePending ||
     isSortByChangePending
 
+  console.log(filteredOrders)
+
   function handleGetNvOrderSuccess(data: GetNvOrdersResponse) {
     if (data.total === 0) return
     const order = data.search_data[0].order
@@ -105,7 +107,7 @@ const Oms = () => {
     () =>
       filteredOrders.map((order) => (
         <Row
-          key={order.orderName}
+          key={order.orderId}
           order={order}
           onClickNvTid={
             showTid
