@@ -31,7 +31,7 @@ const useOrder = () => {
             createdAt: convertDbTimestampToDisplayDate(order.created_at),
             totalPrice: `${order.total_price}`,
             deliveryDate: convertDbTimestampToDisplayDate(order.delivery_date),
-            fulfilmentStatus: order.fulfilment_status,
+            fulfillmentStatus: order.fulfillment_status,
             deliveryMethod: order.delivery_method,
             status: order.financial_status,
             items: parseLineItemsToDisplayString(order.line_items),

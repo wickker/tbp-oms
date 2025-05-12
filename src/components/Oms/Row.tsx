@@ -56,7 +56,7 @@ const Row = memo(({ order, onClickNvTid }: RowProps) => {
   const { useFulfillOrderMutation, usePrintOrderMutation } = useOrder()
   const fulfillOrder = useFulfillOrderMutation(handleFulfillOrderSuccess)
   const printOrder = usePrintOrderMutation(handlePrintOrderSuccess)
-  const isFulfilled = order.fulfilmentStatus === FulfillmemtStatus.FULFILLED
+  const isFulfilled = order.fulfillmentStatus === FulfillmemtStatus.FULFILLED
 
   function handlePrintOrderSuccess() {
     toast.success(`Printed label for order ${order.orderName}`)
@@ -148,11 +148,12 @@ const Row = memo(({ order, onClickNvTid }: RowProps) => {
       <Content className='text-xs font-semibold'>{order.deliveryDate}</Content>
 
       <Content>
-        {isFulfilled ? (
+        {order.fulfillmentStatus === FulfillmemtStatus.FULFILLED && (
           <Chip className='bg-[#D8FADB] text-green-600'>
             {FulfillmemtStatus.FULFILLED}
           </Chip>
-        ) : (
+        )}
+        {order.fulfillmentStatus === FulfillmemtStatus.UNFULFILLED && (
           <Chip className='bg-[#FBDED7] text-red-500'>
             {FulfillmemtStatus.UNFULFILLED}
           </Chip>
