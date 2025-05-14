@@ -38,7 +38,6 @@ const Oms = () => {
     ? 'grid-cols-[80px_80px_120px_80px_minmax(200px,1fr)_100px_100px_120px_140px_120px_100px_140px]'
     : 'grid-cols-[80px_120px_80px_minmax(200px,1fr)_100px_100px_120px_140px_120px_100px_140px]'
   const orders = useMemo(() => getOrders.data || [], [getOrders.data])
-  console.log('orders : ', orders)
   const filteredOrders = useMemo(
     () =>
       applyFiltersAndSort(
