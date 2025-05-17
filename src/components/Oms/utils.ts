@@ -21,7 +21,7 @@ export const getPrintTemplate = (
   const template: PrintTemplateData = {
     delivery_date: convertDbTimestampToPrintDate(orderFound.delivery_date),
     tracking_id: orderFound.tracking_id || '',
-    order_id: orderFound.order_id?.toString() || '',
+    order_id: orderFound.order_name || '',
     shipping_first_name: orderFound.shipping_first_name || '',
     shipping_last_name: orderFound.shipping_last_name || '',
     shipping_contact_number: orderFound.shipping_phone || '',
