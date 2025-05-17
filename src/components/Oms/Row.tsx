@@ -91,7 +91,7 @@ const Row = memo(({ order, onClickNvTid }: RowProps) => {
     const template = getPrintTemplate(queryClient, order.orderId)
     if (!template) return
     printOrder.mutate({
-      template_file: 'cold_100x150.zpl.j2',
+      label_type: order.deliveryMethod || '',
       template_data: template,
     })
   }

@@ -143,7 +143,7 @@ export const PrintTemplateDataSchema = z.object({
 })
 
 export const PrintLabelRequestSchema = z.object({
-  template_file: z.string(),
+  label_type: z.string(),
   template_data: PrintTemplateDataSchema,
 })
 
