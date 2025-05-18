@@ -67,11 +67,19 @@ const useOrder = () => {
       onSuccess,
     })
 
+  const useCancelOrderMutation = (onSuccess?: () => void) =>
+    useMutation({
+      mutationFn: api.cancelOrder(initConfig()),
+      retry: false,
+      onSuccess,
+    })
+
   return {
     useGetOrdersQuery,
     useGetNvOrderMutation,
     useFulfillOrderMutation,
     usePrintOrderMutation,
+    useCancelOrderMutation,
   }
 }
 

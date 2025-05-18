@@ -1,0 +1,41 @@
+import { TransformedOrder } from '@/@types/orders'
+import { DeliveryMethod, FulfillmemtStatus } from '@/utils/enums'
+
+export const mockFilteredOrders: Array<TransformedOrder> = [
+  {
+    orderId: 1001,
+    orderNumber: 1001,
+    orderName: '#1001',
+    trackingId: 'NVSG123456789',
+    customerName: 'John Smith',
+    customerEmail: 'john.smith@example.com',
+    createdAt: '2023-08-15T09:30:00Z',
+    totalPrice: '125.90',
+    deliveryDate: '2023-08-18T14:00:00Z',
+    fulfillmentStatus: FulfillmemtStatus.FULFILLED,
+    deliveryMethod: DeliveryMethod.NV_COLD_CHAIN,
+    status: 'PAID',
+    items: 'Classic White Shirt (M) x1, Black Jeans (32) x1',
+    discounts: '10% OFF SUMMER2023',
+    shippingDetails: '123 Orchard Road, #04-05, Singapore 123456',
+    pickupDate: null,
+  },
+  {
+    orderId: 1002,
+    orderNumber: 1002,
+    orderName: '#1002',
+    trackingId: null,
+    customerName: 'Emily Chen',
+    customerEmail: 'emily.chen@example.com',
+    createdAt: '2023-08-16T11:45:00Z',
+    totalPrice: '89.50',
+    deliveryDate: null,
+    fulfillmentStatus: FulfillmemtStatus.UNFULFILLED,
+    deliveryMethod: DeliveryMethod.SELF_COLLECTION,
+    status: 'PAID',
+    items: 'Floral Dress (S) x1',
+    discounts: null,
+    shippingDetails: '456 Marina Bay, #12-34, Singapore 654321',
+    pickupDate: '2023-08-20T16:00:00Z',
+  },
+]

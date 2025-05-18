@@ -79,9 +79,18 @@ const fulfillOrder =
   async (request: FulfillOrderRequest): Promise<FulfillOrderResponse> =>
     api.post('/fulfill-order', request, await config).then((res) => res.data)
 
+// DELETE
+const cancelOrder =
+  (config: Promise<AxiosRequestConfig>) =>
+  async (orderId: number): Promise<null> =>
+    api
+      .delete(`/orders/${orderId}/delivery`, await config)
+      .then((res) => res.data)
+
 export default {
   getNvOrder,
   getOrders,
   fulfillOrder,
   printLabel,
+  cancelOrder,
 }

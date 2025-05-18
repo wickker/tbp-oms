@@ -53,13 +53,22 @@ type RowProps = {
 
 const Row = memo(({ order, onClickNvTid }: RowProps) => {
   const queryClient = useQueryClient()
-  const { useFulfillOrderMutation, usePrintOrderMutation } = useOrder()
+  const {
+    useFulfillOrderMutation,
+    usePrintOrderMutation,
+    useCancelOrderMutation,
+  } = useOrder()
   const fulfillOrder = useFulfillOrderMutation(handleFulfillOrderSuccess)
   const printOrder = usePrintOrderMutation(handlePrintOrderSuccess)
+  const cancelOrder = useCancelOrderMutation(handleCancelOrderSuccess)
   const isFulfilled = order.fulfillmentStatus === FulfillmemtStatus.FULFILLED
 
   function handlePrintOrderSuccess() {
     toast.success(`Printed label for order ${order.orderName}`)
+  }
+
+  function handleCancelOrderSuccess() {
+    toast.success(`Cancelled order ${order.orderName}`)
   }
 
   function handleFulfillOrderSuccess(data: FulfillOrderResponse) {
@@ -98,10 +107,14 @@ const Row = memo(({ order, onClickNvTid }: RowProps) => {
 
   const handleFulfillOrder = () => {
     if (!order.orderId) return
-
     fulfillOrder.mutate({
       order_id: order.orderId,
     })
+  }
+
+  const handleCancelOrder = () => {
+    if (!order.orderId) return
+    cancelOrder.mutate(order.orderId)
   }
 
   return (
@@ -184,7 +197,7 @@ const Row = memo(({ order, onClickNvTid }: RowProps) => {
 
       <Content className='text-xs'>{order.createdAt}</Content>
 
-      <Content>
+      <Content className=''>
         {!isFulfilled ? (
           <Button
             size='sm'
@@ -194,14 +207,25 @@ const Row = memo(({ order, onClickNvTid }: RowProps) => {
             Fulfill
           </Button>
         ) : (
-          <Button
-            size='sm'
-            variant='outline'
-            onClick={handlePrintOrder}
-            isLoading={printOrder.isPending}
-          >
-            Print Label
-          </Button>
+          <>
+            <Button
+              size='sm'
+              variant='outline'
+              onClick={handlePrintOrder}
+              isLoading={printOrder.isPending}
+            >
+              Print Label
+            </Button>
+            <div className='mb-2' />
+            <Button
+              size='sm'
+              variant='outline'
+              onClick={handleCancelOrder}
+              isLoading={cancelOrder.isPending}
+            >
+              Cancel Order
+            </Button>
+          </>
         )}
       </Content>
 
