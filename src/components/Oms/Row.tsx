@@ -145,9 +145,15 @@ const Row = memo(({ order, onClickNvTid }: RowProps) => {
         {order.discounts}
       </Content>
 
-      <Content className='text-xs font-semibold'>
-        <div>Delivery Date: {order.deliveryDate}</div>
-        <div>Pickup Date: {order.pickupDate}</div>
+      <Content className='text-xs'>
+        <div>
+          Delivery Date:{' '}
+          <span className='font-semibold'>{order.deliveryDate}</span>
+        </div>
+        <br />
+        <div>
+          Pickup Date: <span className='font-semibold'>{order.pickupDate}</span>
+        </div>
       </Content>
 
       <Content>
