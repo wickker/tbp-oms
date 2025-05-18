@@ -145,7 +145,10 @@ const Row = memo(({ order, onClickNvTid }: RowProps) => {
         {order.discounts}
       </Content>
 
-      <Content className='text-xs font-semibold'>{order.deliveryDate}</Content>
+      <Content className='text-xs font-semibold'>
+        <div>Delivery Date: {order.deliveryDate}</div>
+        <div>Pickup Date: {order.pickupDate}</div>
+      </Content>
 
       <Content>
         {order.fulfillmentStatus === FulfillmemtStatus.FULFILLED && (

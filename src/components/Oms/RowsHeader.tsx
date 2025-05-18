@@ -8,7 +8,7 @@ const columnNames = [
   'Total',
   'Items',
   'Discounts',
-  'Delivery\nDate',
+  'Fulfillment\nDates',
   'Status',
   'Delivery\nMethod',
   'Shipping\nDetails',

@@ -121,6 +121,7 @@ export const TransformedOrderSchema = z.object({
   items: z.string(),
   discounts: z.string().nullable(),
   shippingDetails: z.string(),
+  pickupDate: z.string().datetime().nullable(),
 })
 
 export const PrintTemplateDataSchema = z.object({
