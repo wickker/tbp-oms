@@ -148,6 +148,7 @@ const Oms = () => {
           onSortByChange={handleSortByChange}
           searchPhrase={searchPhrase}
           onSearchPhraseChange={setSearchPhrase}
+          onRefresh={getOrders.refetch}
         />
 
         <RowsHeader className={colDimensions} showTid={showTid} />

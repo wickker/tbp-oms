@@ -55,6 +55,7 @@ type OptionsHeaderProps = {
   onSortByChange: (sortBy: string) => void
   searchPhrase: string
   onSearchPhraseChange: (searchPhrase: string) => void
+  onRefresh: () => void
 }
 
 const OptionsHeader = ({
@@ -69,6 +70,7 @@ const OptionsHeader = ({
   onSortByChange,
   searchPhrase,
   onSearchPhraseChange,
+  onRefresh,
 }: OptionsHeaderProps) => {
   const showTid = status !== 'unfulfilled'
 
@@ -178,11 +180,16 @@ const OptionsHeader = ({
         </AnimatePresence>
       </div>
 
-      <SignOutButton>
-        <Button size='sm' variant='secondary'>
-          Sign Out
+      <div className='flex items-center gap-x-2'>
+        <Button size='sm' isLoading={isDisabled} onClick={onRefresh}>
+          Refresh
         </Button>
-      </SignOutButton>
+        <SignOutButton>
+          <Button size='sm' variant='secondary'>
+            Sign Out
+          </Button>
+        </SignOutButton>
+      </div>
     </div>
   )
 }
