@@ -81,7 +81,7 @@ const Row = memo(({ order, onClickNvTid }: RowProps) => {
             order.order_id === data.order_id
               ? {
                   ...order,
-                  fulfilment_status: FulfillmemtStatus.FULFILLED,
+                  fulfillment_status: FulfillmemtStatus.FULFILLED,
                   tracking_id: data.ninjavan_tracking_number,
                 }
               : order
