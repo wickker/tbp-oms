@@ -5,12 +5,14 @@ import { motion } from 'motion/react'
 import {
   FulfillOrderResponse,
   GetOrdersResponse,
+  Order,
   TransformedOrder,
 } from '@/@types/orders'
 import { Button } from '@/components/commons'
 import useOrder from '@/hooks/queries/useOrder'
 import { DeliveryMethod, FulfillmemtStatus } from '@/utils/enums'
 import { cn } from '@/utils/functions'
+import EditDeliveryDateModal from './EditDeliveryDateModal'
 import { getPrintTemplate } from './utils'
 
 type ContentProps = {
@@ -79,11 +81,11 @@ const Row = memo(({ order, onClickNvTid }: RowProps) => {
           ...old,
           orders: old.orders.map((order) =>
             order.order_id === data.order_id
-              ? {
+              ? ({
                   ...order,
                   fulfillment_status: FulfillmemtStatus.FULFILLED,
                   tracking_id: data.ninjavan_tracking_number,
-                }
+                } satisfies Order)
               : order
           ),
         }
@@ -163,6 +165,10 @@ const Row = memo(({ order, onClickNvTid }: RowProps) => {
           Delivery Date:{' '}
           <span className='font-semibold'>{order.deliveryDate}</span>
         </div>
+        <EditDeliveryDateModal
+          orderId={order.orderId || 0}
+          deliveryDate={order.deliveryDate || ''}
+        />
         <br />
         <div>
           Pickup Date: <span className='font-semibold'>{order.pickupDate}</span>

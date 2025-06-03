@@ -11,7 +11,7 @@ export const mockFilteredOrders: Array<TransformedOrder> = [
     customerEmail: 'john.smith@example.com',
     createdAt: '2023-08-15T09:30:00Z',
     totalPrice: '125.90',
-    deliveryDate: '2023-08-18T14:00:00Z',
+    deliveryDate: '27 May 2025',
     fulfillmentStatus: FulfillmemtStatus.FULFILLED,
     deliveryMethod: DeliveryMethod.NV_COLD_CHAIN,
     status: 'PAID',
