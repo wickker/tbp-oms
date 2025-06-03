@@ -1,6 +1,10 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { GetNvOrdersResponse } from '@/@types/nvOrders'
-import { FulfillOrderResponse, TransformedOrder } from '@/@types/orders'
+import {
+  FulfillOrderResponse,
+  TransformedOrder,
+  UpdateDeliveryDateRequest,
+} from '@/@types/orders'
 import useAxiosConfig from '@/hooks/useAxiosConfig'
 import api from '@/services/api'
 import {
@@ -74,12 +78,22 @@ const useOrder = () => {
       onSuccess,
     })
 
+  const useUpdateDeliveryDateMutation = (
+    onSuccess?: (_: null, variables: UpdateDeliveryDateRequest) => void
+  ) =>
+    useMutation({
+      mutationFn: api.updateDeliveryDate(initConfig()),
+      retry: false,
+      onSuccess,
+    })
+
   return {
     useGetOrdersQuery,
     useGetNvOrderMutation,
     useFulfillOrderMutation,
     usePrintOrderMutation,
     useCancelOrderMutation,
+    useUpdateDeliveryDateMutation,
   }
 }
 
