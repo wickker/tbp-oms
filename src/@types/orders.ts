@@ -148,9 +148,14 @@ export const PrintLabelRequestSchema = z.object({
   template_data: PrintTemplateDataSchema,
 })
 
-export const UpdateDeliveryDateRequestSchema = z.object({
+export const UpdateOrderRequestSchema = z.object({
   order_id: z.number().int(),
-  delivery_date: z.string(),
+  delivery_date: z.string().optional(),
+  delivery_method: z.string().optional(),
+})
+
+export const UpdateOrderFormSchema = UpdateOrderRequestSchema.omit({
+  order_id: true,
 })
 
 export type Order = z.infer<typeof OrderSchema>
@@ -162,6 +167,5 @@ export type GetOrdersResponse = z.infer<typeof GetOrdersResponseSchema>
 export type FulfillOrderRequest = z.infer<typeof FulfillOrderRequestSchema>
 export type FulfillOrderResponse = z.infer<typeof FulfillOrderResponseSchema>
 export type PrintLabelRequest = z.infer<typeof PrintLabelRequestSchema>
-export type UpdateDeliveryDateRequest = z.infer<
-  typeof UpdateDeliveryDateRequestSchema
->
+export type UpdateOrderRequest = z.infer<typeof UpdateOrderRequestSchema>
+export type UpdateOrderForm = z.infer<typeof UpdateOrderFormSchema>

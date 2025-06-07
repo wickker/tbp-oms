@@ -3,7 +3,7 @@ import { GetNvOrdersResponse } from '@/@types/nvOrders'
 import {
   FulfillOrderResponse,
   TransformedOrder,
-  UpdateDeliveryDateRequest,
+  UpdateOrderRequest,
 } from '@/@types/orders'
 import useAxiosConfig from '@/hooks/useAxiosConfig'
 import api from '@/services/api'
@@ -78,11 +78,11 @@ const useOrder = () => {
       onSuccess,
     })
 
-  const useUpdateDeliveryDateMutation = (
-    onSuccess?: (_: null, variables: UpdateDeliveryDateRequest) => void
+  const useUpdateOrderMutation = (
+    onSuccess?: (_: null, variables: UpdateOrderRequest) => void
   ) =>
     useMutation({
-      mutationFn: api.updateDeliveryDate(initConfig()),
+      mutationFn: api.updateOrder(initConfig()),
       retry: false,
       onSuccess,
     })
@@ -93,7 +93,7 @@ const useOrder = () => {
     useFulfillOrderMutation,
     usePrintOrderMutation,
     useCancelOrderMutation,
-    useUpdateDeliveryDateMutation,
+    useUpdateOrderMutation,
   }
 }
 
