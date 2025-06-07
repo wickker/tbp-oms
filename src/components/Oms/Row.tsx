@@ -12,7 +12,7 @@ import { Button } from '@/components/commons'
 import useOrder from '@/hooks/queries/useOrder'
 import { DeliveryMethod, FulfillmemtStatus } from '@/utils/enums'
 import { cn } from '@/utils/functions'
-import EditDeliveryDateModal from './EditDeliveryDateModal'
+import EditOrderModal from './EditOrderModal'
 import { getPrintTemplate } from './utils'
 
 type ContentProps = {
@@ -165,10 +165,6 @@ const Row = memo(({ order, onClickNvTid }: RowProps) => {
           Delivery Date:{' '}
           <span className='font-semibold'>{order.deliveryDate}</span>
         </div>
-        <EditDeliveryDateModal
-          orderId={order.orderId || 0}
-          deliveryDate={order.deliveryDate || ''}
-        />
         <br />
         <div>
           Pickup Date: <span className='font-semibold'>{order.pickupDate}</span>
@@ -203,7 +199,13 @@ const Row = memo(({ order, onClickNvTid }: RowProps) => {
 
       <Content className='text-xs'>{order.createdAt}</Content>
 
-      <Content className=''>
+      <Content>
+        <EditOrderModal
+          orderId={order.orderId || 0}
+          deliveryDate={order.deliveryDate || ''}
+          deliveryMethod={order.deliveryMethod || ''}
+        />
+
         {!isFulfilled ? (
           <Button
             size='sm'
@@ -229,7 +231,7 @@ const Row = memo(({ order, onClickNvTid }: RowProps) => {
               onClick={handleCancelOrder}
               isLoading={cancelOrder.isPending}
             >
-              Cancel Order
+              Cancel NV Order
             </Button>
           </>
         )}

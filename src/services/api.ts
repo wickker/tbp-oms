@@ -6,7 +6,7 @@ import {
   FulfillOrderResponse,
   GetOrdersResponse,
   PrintLabelRequest,
-  UpdateDeliveryDateRequest,
+  UpdateOrderRequest,
 } from '@/@types/orders'
 import Config from '@/configs'
 
@@ -81,11 +81,11 @@ const fulfillOrder =
     api.post('/fulfill-order', request, await config).then((res) => res.data)
 
 // PATCH
-const updateDeliveryDate =
+const updateOrder =
   (config: Promise<AxiosRequestConfig>) =>
-  async (request: UpdateDeliveryDateRequest): Promise<null> =>
+  async (request: UpdateOrderRequest): Promise<null> =>
     api
-      .patch(`/orders/${request.order_id}/delivery_date`, request, await config)
+      .patch(`/orders/${request.order_id}`, request, await config)
       .then((res) => res.data)
 
 // DELETE
@@ -102,5 +102,5 @@ export default {
   fulfillOrder,
   printLabel,
   cancelOrder,
-  updateDeliveryDate,
+  updateOrder,
 }

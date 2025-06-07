@@ -15,6 +15,7 @@ import Row from './Row'
 import RowsHeader from './RowsHeader'
 import Skeleton from './Skeleton'
 import { applyFiltersAndSort } from './utils'
+// import { mockFilteredOrders } from '@/mocks/mockOrders'
 
 const Oms = () => {
   const [token, setToken] = useState('')
@@ -35,8 +36,8 @@ const Oms = () => {
   // derived state
   const showTid = status !== 'unfulfilled'
   const colDimensions = showTid
-    ? 'grid-cols-[80px_80px_120px_80px_minmax(200px,1fr)_100px_100px_120px_140px_120px_100px_140px]'
-    : 'grid-cols-[80px_120px_80px_minmax(200px,1fr)_100px_100px_120px_140px_120px_100px_140px]'
+    ? 'grid-cols-[80px_80px_120px_80px_minmax(120px,1fr)_100px_100px_120px_140px_120px_100px_156px]'
+    : 'grid-cols-[80px_120px_80px_minmax(120px,1fr)_100px_100px_120px_140px_120px_100px_156px]'
   const orders = useMemo(() => getOrders.data || [], [getOrders.data])
   const filteredOrders = useMemo(
     () =>
@@ -49,6 +50,7 @@ const Oms = () => {
       ),
     [orders, status, deliveryMethod, sortBy, deferredSearchPhrase]
   )
+  // const filteredOrders = mockFilteredOrders
   const hasfilteredOrders =
     filteredOrders.length > 0 &&
     !getOrders.isFetching &&
