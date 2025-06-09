@@ -63,8 +63,8 @@ const EditOrderModal = ({
   const updateOrder = useUpdateOrderMutation(handleUpdateSuccess)
 
   function handleUpdateSuccess(_: null, variables: UpdateOrderRequest) {
+    const { delivery_date, delivery_method } = variables
     queryClient.setQueryData(['orders'], (old: GetOrdersResponse) => {
-      const { delivery_date, delivery_method } = variables
       return {
         ...old,
         orders: old.orders.map((order) =>
@@ -80,7 +80,11 @@ const EditOrderModal = ({
         ),
       }
     })
-    handleCancel()
+    setOpen(false)
+    reset({
+      delivery_date: delivery_date || dd,
+      delivery_method: delivery_method || dm,
+    })
   }
 
   const handleCancel = () => {
