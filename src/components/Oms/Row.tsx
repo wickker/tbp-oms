@@ -7,6 +7,7 @@ import {
   GetOrdersResponse,
   Order,
   TransformedOrder,
+  UpdateOrderRequest,
 } from '@/@types/orders'
 import { Button } from '@/components/commons'
 import useOrder from '@/hooks/queries/useOrder'
@@ -59,11 +60,30 @@ const Row = memo(({ order, onClickNvTid }: RowProps) => {
     useFulfillOrderMutation,
     usePrintOrderMutation,
     useCancelOrderMutation,
+    useUnfulfillOrderMutation,
   } = useOrder()
   const fulfillOrder = useFulfillOrderMutation(handleFulfillOrderSuccess)
   const printOrder = usePrintOrderMutation(handlePrintOrderSuccess)
   const cancelOrder = useCancelOrderMutation(handleCancelOrderSuccess)
+  const unfulfillOrder = useUnfulfillOrderMutation(handleUnfulfillOrderSuccess)
   const isFulfilled = order.fulfillmentStatus === FulfillmemtStatus.FULFILLED
+
+  function handleUnfulfillOrderSuccess(_: null, variables: UpdateOrderRequest) {
+    toast.success(`Unfulfilled order ${order.orderName}`)
+    queryClient.setQueryData(['orders'], (old: GetOrdersResponse) => {
+      return {
+        ...old,
+        orders: old.orders.map((order) =>
+          order.order_id === variables.order_id
+            ? ({
+                ...order,
+                fulfillment_status: FulfillmemtStatus.UNFULFILLED,
+              } satisfies Order)
+            : order
+        ),
+      }
+    })
+  }
 
   function handlePrintOrderSuccess() {
     toast.success(`Printed label for order ${order.orderName}`)
@@ -117,6 +137,14 @@ const Row = memo(({ order, onClickNvTid }: RowProps) => {
   const handleCancelOrder = () => {
     if (!order.orderId) return
     cancelOrder.mutate(order.orderId)
+  }
+
+  const handleUnfulfillOrder = () => {
+    if (!order.orderId) return
+    unfulfillOrder.mutate({
+      order_id: order.orderId,
+      fulfillment_status: FulfillmemtStatus.UNFULFILLED,
+    })
   }
 
   return (
@@ -232,6 +260,15 @@ const Row = memo(({ order, onClickNvTid }: RowProps) => {
               isLoading={cancelOrder.isPending}
             >
               Cancel NV Order
+            </Button>
+            <div className='mb-2' />
+            <Button
+              size='sm'
+              variant='outline'
+              onClick={handleUnfulfillOrder}
+              isLoading={unfulfillOrder.isPending}
+            >
+              Unfulfill
             </Button>
           </>
         )}

@@ -87,6 +87,15 @@ const useOrder = () => {
       onSuccess,
     })
 
+  const useUnfulfillOrderMutation = (
+    onSuccess?: (_: null, variables: UpdateOrderRequest) => void
+  ) =>
+    useMutation({
+      mutationFn: api.updateOrder(initConfig()),
+      retry: false,
+      onSuccess,
+    })
+
   return {
     useGetOrdersQuery,
     useGetNvOrderMutation,
@@ -94,6 +103,7 @@ const useOrder = () => {
     usePrintOrderMutation,
     useCancelOrderMutation,
     useUpdateOrderMutation,
+    useUnfulfillOrderMutation,
   }
 }
 

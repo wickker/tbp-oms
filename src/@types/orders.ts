@@ -152,6 +152,7 @@ export const UpdateOrderRequestSchema = z.object({
   order_id: z.number().int(),
   delivery_date: z.string().optional(),
   delivery_method: z.string().optional(),
+  fulfillment_status: z.string().optional(),
 })
 
 export const UpdateOrderFormSchema = UpdateOrderRequestSchema.omit({

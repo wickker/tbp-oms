@@ -85,7 +85,15 @@ const updateOrder =
   (config: Promise<AxiosRequestConfig>) =>
   async (request: UpdateOrderRequest): Promise<null> =>
     api
-      .patch(`/orders/${request.order_id}`, request, await config)
+      .patch(
+        `/orders/${request.order_id}`,
+        {
+          delivery_date: request.delivery_date,
+          delivery_method: request.delivery_method,
+          fufillment_status: request.fulfillment_status,
+        },
+        await config
+      )
       .then((res) => res.data)
 
 // DELETE
