@@ -7,10 +7,13 @@ import App from '@/App.tsx'
 import '@/index.css'
 import queryClient from '@/services/queryClient'
 import Config from './configs'
+import startMirage from './mirage'
 
 if (!Config.VITE_CLERK_PUBLISHABLE_KEY) {
   throw new Error('Missing Clerk publishable key')
 }
+
+startMirage()
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

@@ -15,7 +15,6 @@ import Row from './Row'
 import RowsHeader from './RowsHeader'
 import Skeleton from './Skeleton'
 import { applyFiltersAndSort } from './utils'
-// import { mockFilteredOrders } from '@/mocks/mockOrders'
 
 const Oms = () => {
   const [token, setToken] = useState('')
@@ -50,7 +49,6 @@ const Oms = () => {
       ),
     [orders, status, deliveryMethod, sortBy, deferredSearchPhrase]
   )
-  // const filteredOrders = mockFilteredOrders
   const hasfilteredOrders =
     filteredOrders.length > 0 &&
     !getOrders.isFetching &&

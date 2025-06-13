@@ -78,7 +78,7 @@ export const OrderSchema = z.object({
   shipping_zip: z.string().nullable(),
   shipping_phone: z.string().nullable(),
   line_items: z.array(ShopifyLineItemSchema),
-  financial_status: z.string().nullable(),
+  payment_status: z.string().nullable(),
   fulfillment_status: z.string().nullable(),
   created_at: z.string().datetime().nullable(),
   updated_at: z.string().datetime().nullable(),
@@ -86,6 +86,8 @@ export const OrderSchema = z.object({
   delivery_date: z.string().datetime().nullable(),
   tracking_id: z.string().nullable(),
   pickup_date: z.string().datetime().nullable(),
+  customer_contact: z.string().nullable(),
+  customer_subscription: z.string().nullable(),
 })
 
 export const GetOrdersResponseSchema = z.object({
