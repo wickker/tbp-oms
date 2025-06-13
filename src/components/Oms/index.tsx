@@ -155,7 +155,7 @@ const Oms = () => {
 
         <div
           className={cn(
-            'scrollbar grid max-h-[calc(100vh-68px-12px-12px-65px)] w-full items-center overflow-x-hidden overflow-y-auto text-sm',
+            'scrollbar grid max-h-[calc(100vh-68px-12px-12px-65px-68px)] w-full items-center overflow-x-hidden overflow-y-auto text-sm',
             colDimensions
           )}
         >

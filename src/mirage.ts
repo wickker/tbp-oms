@@ -199,6 +199,11 @@ const startMirage = () => {
       )
 
       this.post(
+        'https://modern-bison-62.clerk.accounts.dev/v1/client/sessions/:id/touch',
+        () => ({})
+      )
+
+      this.post(
         'https://modern-bison-62.clerk.accounts.dev/v1/environment',
         () => ({
           auth_config: {

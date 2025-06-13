@@ -1,7 +1,8 @@
 import { Route, Routes } from 'react-router'
 import { ClerkProvider } from '@clerk/clerk-react'
-import Config from './configs'
-import Main from './views/Main'
+import { NavigationBar } from '@/components/commons'
+import Config from '@/configs'
+import Main from '@/views/Main'
 
 const App = () => {
   return (
@@ -9,8 +10,10 @@ const App = () => {
       publishableKey={Config.VITE_CLERK_PUBLISHABLE_KEY}
       afterSignOutUrl='/'
     >
+      <NavigationBar />
       <Routes>
         <Route path='/' element={<Main />} />
+        <Route path='/customers' element={<div>Customers</div>} />
       </Routes>
     </ClerkProvider>
   )

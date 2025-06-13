@@ -1,4 +1,3 @@
-import { SignOutButton } from '@clerk/clerk-react'
 import { AnimatePresence, motion } from 'motion/react'
 import { IoInformationCircle } from 'react-icons/io5'
 import { Button } from '@/components/commons'
@@ -180,16 +179,9 @@ const OptionsHeader = ({
         </AnimatePresence>
       </div>
 
-      <div className='flex items-center gap-x-2'>
-        <Button size='sm' isLoading={isDisabled} onClick={onRefresh}>
-          Refresh
-        </Button>
-        <SignOutButton>
-          <Button size='sm' variant='secondary'>
-            Sign Out
-          </Button>
-        </SignOutButton>
-      </div>
+      <Button size='sm' isLoading={isDisabled} onClick={onRefresh}>
+        Refresh
+      </Button>
     </div>
   )
 }
