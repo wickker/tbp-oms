@@ -15,7 +15,6 @@ import Row from './Row'
 import RowsHeader from './RowsHeader'
 import Skeleton from './Skeleton'
 import { applyFiltersAndSort } from './utils'
-// import { mockFilteredOrders } from '@/mocks/mockOrders'
 
 const Oms = () => {
   const [token, setToken] = useState('')
@@ -50,7 +49,6 @@ const Oms = () => {
       ),
     [orders, status, deliveryMethod, sortBy, deferredSearchPhrase]
   )
-  // const filteredOrders = mockFilteredOrders
   const hasfilteredOrders =
     filteredOrders.length > 0 &&
     !getOrders.isFetching &&
@@ -143,7 +141,7 @@ const Oms = () => {
           status={status}
           onStatusChange={handleStatusChange}
           onTokenChange={setToken}
-          isDisabled={getOrders.isFetching}
+          isOrdersLoading={getOrders.isFetching}
           deliveryMethod={deliveryMethod}
           onDeliveryMethodChange={handleDeliveryMethodChange}
           sortBy={sortBy}
@@ -157,7 +155,7 @@ const Oms = () => {
 
         <div
           className={cn(
-            'scrollbar grid max-h-[calc(100vh-68px-12px-12px-65px)] w-full items-center overflow-x-hidden overflow-y-auto text-sm',
+            'scrollbar grid max-h-[calc(100vh-68px-12px-12px-65px-68px)] w-full items-center overflow-x-hidden overflow-y-auto text-sm',
             colDimensions
           )}
         >

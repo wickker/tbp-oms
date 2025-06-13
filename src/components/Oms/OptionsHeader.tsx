@@ -1,4 +1,4 @@
-import { SignOutButton } from '@clerk/clerk-react'
+import { useEffect, useRef } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import { IoInformationCircle } from 'react-icons/io5'
 import { Button } from '@/components/commons'
@@ -48,7 +48,7 @@ type OptionsHeaderProps = {
   onStatusChange: (status: string) => void
   token: string
   onTokenChange: (token: string) => void
-  isDisabled: boolean
+  isOrdersLoading: boolean
   deliveryMethod: string
   onDeliveryMethodChange: (deliveryMethod: string) => void
   sortBy: string
@@ -63,7 +63,7 @@ const OptionsHeader = ({
   onStatusChange,
   token,
   onTokenChange,
-  isDisabled,
+  isOrdersLoading,
   deliveryMethod,
   onDeliveryMethodChange,
   sortBy,
@@ -72,7 +72,17 @@ const OptionsHeader = ({
   onSearchPhraseChange,
   onRefresh,
 }: OptionsHeaderProps) => {
+  const isRefreshClickedRef = useRef(false)
   const showTid = status !== 'unfulfilled'
+
+  const handleRefresh = () => {
+    isRefreshClickedRef.current = true
+    onRefresh()
+  }
+
+  useEffect(() => {
+    if (!isOrdersLoading) isRefreshClickedRef.current = false
+  }, [isOrdersLoading])
 
   return (
     <div className='flex items-center justify-between pb-3'>
@@ -84,7 +94,7 @@ const OptionsHeader = ({
           <Select
             value={sortBy}
             onValueChange={onSortByChange}
-            disabled={isDisabled}
+            disabled={isOrdersLoading}
           >
             <SelectTrigger className='w-[230px]'>
               <SelectValue />
@@ -109,7 +119,7 @@ const OptionsHeader = ({
           <Select
             value={status}
             onValueChange={onStatusChange}
-            disabled={isDisabled}
+            disabled={isOrdersLoading}
           >
             <SelectTrigger className='w-[120px]'>
               <SelectValue />
@@ -129,7 +139,7 @@ const OptionsHeader = ({
           <Select
             value={deliveryMethod}
             onValueChange={onDeliveryMethodChange}
-            disabled={isDisabled}
+            disabled={isOrdersLoading}
           >
             <SelectTrigger className='w-[150px]'>
               <SelectValue />
@@ -152,7 +162,7 @@ const OptionsHeader = ({
             value={searchPhrase}
             onChange={(e) => onSearchPhraseChange(e.target.value)}
             className='w-[350px] text-xs'
-            disabled={isDisabled}
+            disabled={isOrdersLoading}
           />
         </div>
 
@@ -173,23 +183,20 @@ const OptionsHeader = ({
                 value={token}
                 onChange={(e) => onTokenChange(e.target.value)}
                 className='w-[250px] text-xs'
-                disabled={isDisabled}
+                disabled={isOrdersLoading}
               />
             </motion.div>
           )}
         </AnimatePresence>
       </div>
 
-      <div className='flex items-center gap-x-2'>
-        <Button size='sm' isLoading={isDisabled} onClick={onRefresh}>
-          Refresh
-        </Button>
-        <SignOutButton>
-          <Button size='sm' variant='secondary'>
-            Sign Out
-          </Button>
-        </SignOutButton>
-      </div>
+      <Button
+        size='sm'
+        isLoading={isOrdersLoading && isRefreshClickedRef.current}
+        onClick={handleRefresh}
+      >
+        Refresh
+      </Button>
     </div>
   )
 }

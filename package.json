@@ -60,6 +60,7 @@
     "husky": "^9.1.7",
     "jsdom": "^26.0.0",
     "lint-staged": "^15.5.0",
+    "miragejs": "^0.1.48",
     "prettier": "^3.5.3",
     "prettier-plugin-tailwindcss": "^0.6.11",
     "tailwind-merge": "^3.2.0",

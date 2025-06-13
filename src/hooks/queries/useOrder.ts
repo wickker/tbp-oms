@@ -38,7 +38,7 @@ const useOrder = () => {
             pickupDate: convertDbTimestampToDisplayDate(order.pickup_date),
             fulfillmentStatus: order.fulfillment_status,
             deliveryMethod: order.delivery_method,
-            status: order.financial_status,
+            status: order.payment_status,
             items: parseLineItemsToDisplayString(order.line_items),
             discounts: parseDiscountsToDisplayString(order.discount_codes),
             shippingDetails: `${order.shipping_first_name || ''} ${order.shipping_last_name || ''}\n${order.shipping_phone || ''}\n${parseShippingAddressToDisplayString(order)}`,
