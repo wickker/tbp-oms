@@ -199,6 +199,11 @@ const startMirage = () => {
       )
 
       this.post(
+        'https://modern-bison-62.clerk.accounts.dev/v1/client/sessions/tokens',
+        () => ({})
+      )
+
+      this.post(
         'https://modern-bison-62.clerk.accounts.dev/v1/client/sessions/:id/touch',
         () => ({})
       )

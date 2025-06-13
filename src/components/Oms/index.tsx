@@ -141,7 +141,7 @@ const Oms = () => {
           status={status}
           onStatusChange={handleStatusChange}
           onTokenChange={setToken}
-          isDisabled={getOrders.isFetching}
+          isOrdersLoading={getOrders.isFetching}
           deliveryMethod={deliveryMethod}
           onDeliveryMethodChange={handleDeliveryMethodChange}
           sortBy={sortBy}
