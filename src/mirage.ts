@@ -1,6 +1,6 @@
 import { createServer } from 'miragejs'
-import Config from './configs'
-import { mockOrders } from './mocks/mockOrders'
+import Config from '@/configs'
+import { mockOrders } from '@/mocks/mockOrders'
 
 const startMirage = () => {
   if (Config.VITE_ENVIRONMENT !== 'dev') return

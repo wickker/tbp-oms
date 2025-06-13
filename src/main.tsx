@@ -5,9 +5,9 @@ import { ToastContainer, Slide } from 'react-toastify'
 import { QueryClientProvider } from '@tanstack/react-query'
 import App from '@/App.tsx'
 import '@/index.css'
+import Config from '@/configs'
+import startMirage from '@/mirage'
 import queryClient from '@/services/queryClient'
-import Config from './configs'
-import startMirage from './mirage'
 
 if (!Config.VITE_CLERK_PUBLISHABLE_KEY) {
   throw new Error('Missing Clerk publishable key')

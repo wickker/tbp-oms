@@ -2,6 +2,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { SignOutButton } from '@clerk/clerk-react'
 import { Button } from '@/components/commons'
 import { cn } from '@/utils/functions'
+
 const navItems = [
   {
     label: 'OMS',
@@ -18,7 +19,7 @@ const NavigationBar = () => {
   const navigate = useNavigate()
 
   return (
-    <div className='mb-2 h-[60px] min-w-[1450px] bg-black'>
+    <div className='mb-2 h-[60px] w-screen min-w-[1450px] bg-black'>
       <div className='mx-auto flex h-full w-full max-w-[1450px] items-center justify-between p-3 text-white'>
         <div className='flex items-center gap-10'>
           {navItems.map((item) => {
