@@ -2,11 +2,12 @@ import axios, { AxiosRequestConfig } from 'axios'
 import { DateTime } from 'luxon'
 import { GetNvOrdersResponse } from '@/@types/nvOrders'
 import {
-  FulfillOrderRequest,
+  CancelOrderResponse,
   FulfillOrderResponse,
   GetOrdersResponse,
   PrintLabelRequest,
   UpdateOrderRequest,
+  UpdateOrderResponse,
 } from '@/@types/orders'
 import Config from '@/configs'
 
@@ -77,13 +78,15 @@ const getNvOrder = async ({
 
 const fulfillOrder =
   (config: Promise<AxiosRequestConfig>) =>
-  async (request: FulfillOrderRequest): Promise<FulfillOrderResponse> =>
-    api.post('/fulfill-order', request, await config).then((res) => res.data)
+  async (orderId: number): Promise<FulfillOrderResponse> =>
+    api
+      .post(`/orders/${orderId}/fulfill`, {}, await config)
+      .then((res) => res.data)
 
 // PATCH
 const updateOrder =
   (config: Promise<AxiosRequestConfig>) =>
-  async (request: UpdateOrderRequest): Promise<null> =>
+  async (request: UpdateOrderRequest): Promise<UpdateOrderResponse> =>
     api
       .patch(
         `/orders/${request.order_id}`,
@@ -97,11 +100,18 @@ const updateOrder =
       .then((res) => res.data)
 
 // DELETE
-const cancelOrder =
+const cancelNvOrder =
   (config: Promise<AxiosRequestConfig>) =>
   async (orderId: number): Promise<null> =>
     api
       .delete(`/orders/${orderId}/delivery`, await config)
+      .then((res) => res.data)
+
+const cancelOrder =
+  (config: Promise<AxiosRequestConfig>) =>
+  async (orderId: number): Promise<CancelOrderResponse> =>
+    api
+      .delete(`/orders/${orderId}/cancel`, await config)
       .then((res) => res.data)
 
 export default {
@@ -109,6 +119,7 @@ export default {
   getOrders,
   fulfillOrder,
   printLabel,
-  cancelOrder,
+  cancelNvOrder,
   updateOrder,
+  cancelOrder,
 }

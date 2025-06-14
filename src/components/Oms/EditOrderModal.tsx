@@ -17,6 +17,7 @@ import {
   Order,
   UpdateOrderForm,
   UpdateOrderRequest,
+  UpdateOrderResponse,
 } from '@/@types/orders'
 import { Button } from '@/components/commons'
 import { Input } from '@/components/ui/input'
@@ -31,13 +32,13 @@ import useOrder from '@/hooks/queries/useOrder'
 import { DeliveryMethod } from '@/utils/enums'
 
 type EditOrderModalProps = {
-  orderId: number
+  internalOrderId: number
   deliveryDate: string
   deliveryMethod: string
 }
 
 const EditOrderModal = ({
-  orderId,
+  internalOrderId,
   deliveryDate,
   deliveryMethod: dm,
 }: EditOrderModalProps) => {
@@ -62,18 +63,24 @@ const EditOrderModal = ({
   const { useUpdateOrderMutation } = useOrder()
   const updateOrder = useUpdateOrderMutation(handleUpdateSuccess)
 
-  function handleUpdateSuccess(_: null, variables: UpdateOrderRequest) {
+  function handleUpdateSuccess(
+    data: UpdateOrderResponse,
+    variables: UpdateOrderRequest
+  ) {
     const { delivery_date, delivery_method } = variables
     queryClient.setQueryData(['orders'], (old: GetOrdersResponse) => {
       return {
         ...old,
         orders: old.orders.map((order) =>
-          order.order_id === variables.order_id
+          order.id === variables.order_id
             ? ({
                 ...order,
                 delivery_date: delivery_date
                   ? `${delivery_date}T00:00:00`
                   : order.delivery_date,
+                pickup_date: data.updated_fields.pickup_date.new_value
+                  ? `${data.updated_fields.pickup_date.new_value}T00:00:00`
+                  : order.pickup_date,
                 delivery_method: delivery_method || order.delivery_method,
               } satisfies Order)
             : order
@@ -94,7 +101,7 @@ const EditOrderModal = ({
 
   const onSubmit = (data: UpdateOrderForm) => {
     const request: UpdateOrderRequest = {
-      order_id: orderId,
+      order_id: internalOrderId,
       delivery_date: data.delivery_date || undefined,
       delivery_method: data.delivery_method,
     }

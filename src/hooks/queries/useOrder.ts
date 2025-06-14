@@ -1,9 +1,11 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { GetNvOrdersResponse } from '@/@types/nvOrders'
 import {
+  CancelOrderResponse,
   FulfillOrderResponse,
   TransformedOrder,
   UpdateOrderRequest,
+  UpdateOrderResponse,
 } from '@/@types/orders'
 import useAxiosConfig from '@/hooks/useAxiosConfig'
 import api from '@/services/api'
@@ -26,6 +28,7 @@ const useOrder = () => {
       select: (data): Array<TransformedOrder> =>
         data.orders.map((order) => {
           return {
+            internalOrderId: order.id,
             orderId: order.order_id,
             orderNumber: parseOrderNameToNumber(order.order_name),
             orderName: order.order_name,
@@ -38,7 +41,7 @@ const useOrder = () => {
             pickupDate: convertDbTimestampToDisplayDate(order.pickup_date),
             fulfillmentStatus: order.fulfillment_status,
             deliveryMethod: order.delivery_method,
-            status: order.payment_status,
+            paymentStatus: order.payment_status,
             items: parseLineItemsToDisplayString(order.line_items),
             discounts: parseDiscountsToDisplayString(order.discount_codes),
             shippingDetails: `${order.shipping_first_name || ''} ${order.shipping_last_name || ''}\n${order.shipping_phone || ''}\n${parseShippingAddressToDisplayString(order)}`,
@@ -71,7 +74,16 @@ const useOrder = () => {
       onSuccess,
     })
 
-  const useCancelOrderMutation = (onSuccess?: () => void) =>
+  const useCancelNvOrderMutation = (onSuccess?: () => void) =>
+    useMutation({
+      mutationFn: api.cancelNvOrder(initConfig()),
+      retry: false,
+      onSuccess,
+    })
+
+  const useCancelOrderMutation = (
+    onSuccess?: (data: CancelOrderResponse) => void
+  ) =>
     useMutation({
       mutationFn: api.cancelOrder(initConfig()),
       retry: false,
@@ -79,7 +91,10 @@ const useOrder = () => {
     })
 
   const useUpdateOrderMutation = (
-    onSuccess?: (_: null, variables: UpdateOrderRequest) => void
+    onSuccess?: (
+      data: UpdateOrderResponse,
+      variables: UpdateOrderRequest
+    ) => void
   ) =>
     useMutation({
       mutationFn: api.updateOrder(initConfig()),
@@ -88,7 +103,10 @@ const useOrder = () => {
     })
 
   const useUnfulfillOrderMutation = (
-    onSuccess?: (_: null, variables: UpdateOrderRequest) => void
+    onSuccess?: (
+      data: UpdateOrderResponse,
+      variables: UpdateOrderRequest
+    ) => void
   ) =>
     useMutation({
       mutationFn: api.updateOrder(initConfig()),
@@ -102,6 +120,7 @@ const useOrder = () => {
     useFulfillOrderMutation,
     usePrintOrderMutation,
     useCancelOrderMutation,
+    useCancelNvOrderMutation,
     useUpdateOrderMutation,
     useUnfulfillOrderMutation,
   }

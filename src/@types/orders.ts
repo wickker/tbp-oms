@@ -94,10 +94,6 @@ export const GetOrdersResponseSchema = z.object({
   orders: z.array(OrderSchema),
 })
 
-export const FulfillOrderRequestSchema = z.object({
-  order_id: z.number().int(),
-})
-
 export const FulfillOrderResponseSchema = z.object({
   success: z.boolean(),
   message: z.string(),
@@ -108,6 +104,7 @@ export const FulfillOrderResponseSchema = z.object({
 })
 
 export const TransformedOrderSchema = z.object({
+  internalOrderId: z.number().int(),
   orderId: z.number().int().nullable(),
   orderNumber: z.number(),
   orderName: z.string().nullable(),
@@ -119,7 +116,7 @@ export const TransformedOrderSchema = z.object({
   deliveryDate: z.string().datetime().nullable(),
   fulfillmentStatus: z.string().nullable(),
   deliveryMethod: z.string().nullable(),
-  status: z.string().nullable(),
+  paymentStatus: z.string().nullable(),
   items: z.string(),
   discounts: z.string().nullable(),
   shippingDetails: z.string(),
@@ -157,8 +154,40 @@ export const UpdateOrderRequestSchema = z.object({
   fulfillment_status: z.string().optional(),
 })
 
+export const UpdateOrderResponseSchema = z.object({
+  success: z.boolean(),
+  message: z.string(),
+  order_id: z.number().int(),
+  updated_fields: z.object({
+    delivery_date: z.object({
+      old_value: z.string(),
+      new_value: z.string(),
+    }),
+    pickup_date: z.object({
+      old_value: z.string(),
+      new_value: z.string(),
+    }),
+    delivery_method: z.object({
+      old_value: z.string(),
+      new_value: z.string(),
+    }),
+  }),
+})
+
 export const UpdateOrderFormSchema = UpdateOrderRequestSchema.omit({
   order_id: true,
+})
+
+export const CancelOrderResponseSchema = z.object({
+  success: z.boolean(),
+  message: z.string(),
+  order_id: z.number().int(),
+  shopify_order_id: z.number().int().nullable(),
+  previous_status: z.string(),
+  new_status: z.string(),
+  delivery_cancelled: z.boolean(),
+  tracking_id: z.string().nullable(),
+  shopify_cancellation_success: z.boolean(),
 })
 
 export type Order = z.infer<typeof OrderSchema>
@@ -167,8 +196,9 @@ export type DiscountCode = z.infer<typeof DiscountCodeSchema>
 export type TransformedOrder = z.infer<typeof TransformedOrderSchema>
 export type PrintTemplateData = z.infer<typeof PrintTemplateDataSchema>
 export type GetOrdersResponse = z.infer<typeof GetOrdersResponseSchema>
-export type FulfillOrderRequest = z.infer<typeof FulfillOrderRequestSchema>
 export type FulfillOrderResponse = z.infer<typeof FulfillOrderResponseSchema>
 export type PrintLabelRequest = z.infer<typeof PrintLabelRequestSchema>
 export type UpdateOrderRequest = z.infer<typeof UpdateOrderRequestSchema>
 export type UpdateOrderForm = z.infer<typeof UpdateOrderFormSchema>
+export type UpdateOrderResponse = z.infer<typeof UpdateOrderResponseSchema>
+export type CancelOrderResponse = z.infer<typeof CancelOrderResponseSchema>
