@@ -178,6 +178,18 @@ export const UpdateOrderFormSchema = UpdateOrderRequestSchema.omit({
   order_id: true,
 })
 
+export const CancelOrderResponseSchema = z.object({
+  success: z.boolean(),
+  message: z.string(),
+  order_id: z.number().int(),
+  shopify_order_id: z.number().int().nullable(),
+  previous_status: z.string(),
+  new_status: z.string(),
+  delivery_cancelled: z.boolean(),
+  tracking_id: z.string().nullable(),
+  shopify_cancellation_success: z.boolean(),
+})
+
 export type Order = z.infer<typeof OrderSchema>
 export type ShopifyLineItem = z.infer<typeof ShopifyLineItemSchema>
 export type DiscountCode = z.infer<typeof DiscountCodeSchema>
@@ -189,3 +201,4 @@ export type PrintLabelRequest = z.infer<typeof PrintLabelRequestSchema>
 export type UpdateOrderRequest = z.infer<typeof UpdateOrderRequestSchema>
 export type UpdateOrderForm = z.infer<typeof UpdateOrderFormSchema>
 export type UpdateOrderResponse = z.infer<typeof UpdateOrderResponseSchema>
+export type CancelOrderResponse = z.infer<typeof CancelOrderResponseSchema>

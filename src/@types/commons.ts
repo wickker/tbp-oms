@@ -1,3 +1,4 @@
 export type AppError = {
-  message: string
+  message?: string
+  detail?: string
 }

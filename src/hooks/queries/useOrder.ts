@@ -1,6 +1,7 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { GetNvOrdersResponse } from '@/@types/nvOrders'
 import {
+  CancelOrderResponse,
   FulfillOrderResponse,
   TransformedOrder,
   UpdateOrderRequest,
@@ -80,7 +81,9 @@ const useOrder = () => {
       onSuccess,
     })
 
-  const useCancelOrderMutation = (onSuccess?: () => void) =>
+  const useCancelOrderMutation = (
+    onSuccess?: (data: CancelOrderResponse) => void
+  ) =>
     useMutation({
       mutationFn: api.cancelOrder(initConfig()),
       retry: false,

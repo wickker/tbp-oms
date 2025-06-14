@@ -2,6 +2,7 @@ import axios, { AxiosRequestConfig } from 'axios'
 import { DateTime } from 'luxon'
 import { GetNvOrdersResponse } from '@/@types/nvOrders'
 import {
+  CancelOrderResponse,
   FulfillOrderResponse,
   GetOrdersResponse,
   PrintLabelRequest,
@@ -108,7 +109,7 @@ const cancelNvOrder =
 
 const cancelOrder =
   (config: Promise<AxiosRequestConfig>) =>
-  async (orderId: number): Promise<null> =>
+  async (orderId: number): Promise<CancelOrderResponse> =>
     api
       .delete(`/orders/${orderId}/cancel`, await config)
       .then((res) => res.data)

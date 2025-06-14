@@ -5,9 +5,20 @@ import { AppError } from '@/@types/commons'
 
 const handleError = (err: AxiosError<AppError> | Error) => {
   if (err instanceof AxiosError) {
+    if (err.response?.data.message) {
+      toast.error(err.response?.data.message)
+      return
+    }
+
+    if (err.response?.data.detail) {
+      toast.error(err.response?.data.detail)
+      return
+    }
+
     toast.error(err.message)
     return
   }
+
   toast.error(err.message)
 }
 

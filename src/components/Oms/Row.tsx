@@ -3,6 +3,7 @@ import { toast } from 'react-toastify'
 import { useQueryClient } from '@tanstack/react-query'
 import { motion } from 'motion/react'
 import {
+  CancelOrderResponse,
   FulfillOrderResponse,
   GetOrdersResponse,
   Order,
@@ -62,18 +63,31 @@ const Row = memo(({ order, onClickNvTid }: RowProps) => {
     usePrintOrderMutation,
     useCancelNvOrderMutation,
     useUnfulfillOrderMutation,
+    useCancelOrderMutation,
   } = useOrder()
   const fulfillOrder = useFulfillOrderMutation(handleFulfillOrderSuccess)
   const printOrder = usePrintOrderMutation(handlePrintOrderSuccess)
-  const cancelOrder = useCancelNvOrderMutation(handleCancelNvOrderSuccess)
+  const cancelNvOrder = useCancelNvOrderMutation(handleCancelNvOrderSuccess)
+  const cancelOrder = useCancelOrderMutation(handleCancelOrderSuccess)
   const unfulfillOrder = useUnfulfillOrderMutation(handleUnfulfillOrderSuccess)
   const isFulfilled = order.fulfillmentStatus === FulfillmemtStatus.FULFILLED
+
+  function handleCancelOrderSuccess(data: CancelOrderResponse) {
+    if (data.success) {
+      toast.success(data.message)
+      queryClient.setQueryData(['orders'], (old: GetOrdersResponse) => {
+        return {
+          ...old,
+          orders: old.orders.filter((o) => o.id !== order.internalOrderId),
+        }
+      })
+    }
+  }
 
   function handleUnfulfillOrderSuccess(
     _: UpdateOrderResponse,
     variables: UpdateOrderRequest
   ) {
-    toast.success(`Unfulfilled order ${order.orderName}`)
     queryClient.setQueryData(['orders'], (old: GetOrdersResponse) => {
       return {
         ...old,
@@ -131,23 +145,17 @@ const Row = memo(({ order, onClickNvTid }: RowProps) => {
     })
   }
 
-  const handleFulfillOrder = () => {
-    if (!order.internalOrderId) return
-    fulfillOrder.mutate(order.internalOrderId)
-  }
+  const handleCancelOrder = () => cancelOrder.mutate(order.internalOrderId)
 
-  const handleCancelOrder = () => {
-    if (!order.internalOrderId) return
-    cancelOrder.mutate(order.internalOrderId)
-  }
+  const handleFulfillOrder = () => fulfillOrder.mutate(order.internalOrderId)
 
-  const handleUnfulfillOrder = () => {
-    if (!order.internalOrderId) return
+  const handleCancelNvOrder = () => cancelNvOrder.mutate(order.internalOrderId)
+
+  const handleUnfulfillOrder = () =>
     unfulfillOrder.mutate({
       order_id: order.internalOrderId,
       fulfillment_status: FulfillmemtStatus.UNFULFILLED,
     })
-  }
 
   return (
     <>
@@ -236,7 +244,12 @@ const Row = memo(({ order, onClickNvTid }: RowProps) => {
           deliveryMethod={order.deliveryMethod || ''}
         />
 
-        <Button size='sm' variant='outline'>
+        <Button
+          size='sm'
+          variant='outline'
+          onClick={handleCancelOrder}
+          isLoading={cancelOrder.isPending}
+        >
           Cancel Order
         </Button>
         <div className='mb-2' />
@@ -263,8 +276,8 @@ const Row = memo(({ order, onClickNvTid }: RowProps) => {
             <Button
               size='sm'
               variant='outline'
-              onClick={handleCancelOrder}
-              isLoading={cancelOrder.isPending}
+              onClick={handleCancelNvOrder}
+              isLoading={cancelNvOrder.isPending}
             >
               Cancel NV Order
             </Button>
