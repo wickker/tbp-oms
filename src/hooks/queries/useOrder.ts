@@ -4,6 +4,7 @@ import {
   FulfillOrderResponse,
   TransformedOrder,
   UpdateOrderRequest,
+  UpdateOrderResponse,
 } from '@/@types/orders'
 import useAxiosConfig from '@/hooks/useAxiosConfig'
 import api from '@/services/api'
@@ -38,7 +39,7 @@ const useOrder = () => {
             pickupDate: convertDbTimestampToDisplayDate(order.pickup_date),
             fulfillmentStatus: order.fulfillment_status,
             deliveryMethod: order.delivery_method,
-            status: order.payment_status,
+            paymentStatus: order.payment_status,
             items: parseLineItemsToDisplayString(order.line_items),
             discounts: parseDiscountsToDisplayString(order.discount_codes),
             shippingDetails: `${order.shipping_first_name || ''} ${order.shipping_last_name || ''}\n${order.shipping_phone || ''}\n${parseShippingAddressToDisplayString(order)}`,
@@ -79,7 +80,10 @@ const useOrder = () => {
     })
 
   const useUpdateOrderMutation = (
-    onSuccess?: (_: null, variables: UpdateOrderRequest) => void
+    onSuccess?: (
+      data: UpdateOrderResponse,
+      variables: UpdateOrderRequest
+    ) => void
   ) =>
     useMutation({
       mutationFn: api.updateOrder(initConfig()),
@@ -88,7 +92,10 @@ const useOrder = () => {
     })
 
   const useUnfulfillOrderMutation = (
-    onSuccess?: (_: null, variables: UpdateOrderRequest) => void
+    onSuccess?: (
+      data: UpdateOrderResponse,
+      variables: UpdateOrderRequest
+    ) => void
   ) =>
     useMutation({
       mutationFn: api.updateOrder(initConfig()),

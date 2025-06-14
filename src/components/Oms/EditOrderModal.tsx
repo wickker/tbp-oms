@@ -17,6 +17,7 @@ import {
   Order,
   UpdateOrderForm,
   UpdateOrderRequest,
+  UpdateOrderResponse,
 } from '@/@types/orders'
 import { Button } from '@/components/commons'
 import { Input } from '@/components/ui/input'
@@ -62,7 +63,10 @@ const EditOrderModal = ({
   const { useUpdateOrderMutation } = useOrder()
   const updateOrder = useUpdateOrderMutation(handleUpdateSuccess)
 
-  function handleUpdateSuccess(_: null, variables: UpdateOrderRequest) {
+  function handleUpdateSuccess(
+    data: UpdateOrderResponse,
+    variables: UpdateOrderRequest
+  ) {
     const { delivery_date, delivery_method } = variables
     queryClient.setQueryData(['orders'], (old: GetOrdersResponse) => {
       return {
@@ -74,6 +78,9 @@ const EditOrderModal = ({
                 delivery_date: delivery_date
                   ? `${delivery_date}T00:00:00`
                   : order.delivery_date,
+                pickup_date: data.updated_fields.pickup_date.new_value
+                  ? `${data.updated_fields.pickup_date.new_value}T00:00:00`
+                  : order.pickup_date,
                 delivery_method: delivery_method || order.delivery_method,
               } satisfies Order)
             : order

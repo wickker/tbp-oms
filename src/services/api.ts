@@ -7,6 +7,7 @@ import {
   GetOrdersResponse,
   PrintLabelRequest,
   UpdateOrderRequest,
+  UpdateOrderResponse,
 } from '@/@types/orders'
 import Config from '@/configs'
 
@@ -83,7 +84,7 @@ const fulfillOrder =
 // PATCH
 const updateOrder =
   (config: Promise<AxiosRequestConfig>) =>
-  async (request: UpdateOrderRequest): Promise<null> =>
+  async (request: UpdateOrderRequest): Promise<UpdateOrderResponse> =>
     api
       .patch(
         `/orders/${request.order_id}`,

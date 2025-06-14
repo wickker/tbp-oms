@@ -8,6 +8,7 @@ import {
   Order,
   TransformedOrder,
   UpdateOrderRequest,
+  UpdateOrderResponse,
 } from '@/@types/orders'
 import { Button } from '@/components/commons'
 import useOrder from '@/hooks/queries/useOrder'
@@ -68,7 +69,10 @@ const Row = memo(({ order, onClickNvTid }: RowProps) => {
   const unfulfillOrder = useUnfulfillOrderMutation(handleUnfulfillOrderSuccess)
   const isFulfilled = order.fulfillmentStatus === FulfillmemtStatus.FULFILLED
 
-  function handleUnfulfillOrderSuccess(_: null, variables: UpdateOrderRequest) {
+  function handleUnfulfillOrderSuccess(
+    _: UpdateOrderResponse,
+    variables: UpdateOrderRequest
+  ) {
     toast.success(`Unfulfilled order ${order.orderName}`)
     queryClient.setQueryData(['orders'], (old: GetOrdersResponse) => {
       return {

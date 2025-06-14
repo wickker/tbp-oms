@@ -119,7 +119,7 @@ export const TransformedOrderSchema = z.object({
   deliveryDate: z.string().datetime().nullable(),
   fulfillmentStatus: z.string().nullable(),
   deliveryMethod: z.string().nullable(),
-  status: z.string().nullable(),
+  paymentStatus: z.string().nullable(),
   items: z.string(),
   discounts: z.string().nullable(),
   shippingDetails: z.string(),
@@ -157,6 +157,26 @@ export const UpdateOrderRequestSchema = z.object({
   fulfillment_status: z.string().optional(),
 })
 
+export const UpdateOrderResponseSchema = z.object({
+  success: z.boolean(),
+  message: z.string(),
+  order_id: z.number().int(),
+  updated_fields: z.object({
+    delivery_date: z.object({
+      old_value: z.string(),
+      new_value: z.string(),
+    }),
+    pickup_date: z.object({
+      old_value: z.string(),
+      new_value: z.string(),
+    }),
+    delivery_method: z.object({
+      old_value: z.string(),
+      new_value: z.string(),
+    }),
+  }),
+})
+
 export const UpdateOrderFormSchema = UpdateOrderRequestSchema.omit({
   order_id: true,
 })
@@ -172,3 +192,4 @@ export type FulfillOrderResponse = z.infer<typeof FulfillOrderResponseSchema>
 export type PrintLabelRequest = z.infer<typeof PrintLabelRequestSchema>
 export type UpdateOrderRequest = z.infer<typeof UpdateOrderRequestSchema>
 export type UpdateOrderForm = z.infer<typeof UpdateOrderFormSchema>
+export type UpdateOrderResponse = z.infer<typeof UpdateOrderResponseSchema>
