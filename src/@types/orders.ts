@@ -94,10 +94,6 @@ export const GetOrdersResponseSchema = z.object({
   orders: z.array(OrderSchema),
 })
 
-export const FulfillOrderRequestSchema = z.object({
-  order_id: z.number().int(),
-})
-
 export const FulfillOrderResponseSchema = z.object({
   success: z.boolean(),
   message: z.string(),
@@ -108,6 +104,7 @@ export const FulfillOrderResponseSchema = z.object({
 })
 
 export const TransformedOrderSchema = z.object({
+  internalOrderId: z.number().int(),
   orderId: z.number().int().nullable(),
   orderNumber: z.number(),
   orderName: z.string().nullable(),
@@ -187,7 +184,6 @@ export type DiscountCode = z.infer<typeof DiscountCodeSchema>
 export type TransformedOrder = z.infer<typeof TransformedOrderSchema>
 export type PrintTemplateData = z.infer<typeof PrintTemplateDataSchema>
 export type GetOrdersResponse = z.infer<typeof GetOrdersResponseSchema>
-export type FulfillOrderRequest = z.infer<typeof FulfillOrderRequestSchema>
 export type FulfillOrderResponse = z.infer<typeof FulfillOrderResponseSchema>
 export type PrintLabelRequest = z.infer<typeof PrintLabelRequestSchema>
 export type UpdateOrderRequest = z.infer<typeof UpdateOrderRequestSchema>

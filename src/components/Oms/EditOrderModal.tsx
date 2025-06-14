@@ -32,13 +32,13 @@ import useOrder from '@/hooks/queries/useOrder'
 import { DeliveryMethod } from '@/utils/enums'
 
 type EditOrderModalProps = {
-  orderId: number
+  internalOrderId: number
   deliveryDate: string
   deliveryMethod: string
 }
 
 const EditOrderModal = ({
-  orderId,
+  internalOrderId,
   deliveryDate,
   deliveryMethod: dm,
 }: EditOrderModalProps) => {
@@ -72,7 +72,7 @@ const EditOrderModal = ({
       return {
         ...old,
         orders: old.orders.map((order) =>
-          order.order_id === variables.order_id
+          order.id === variables.order_id
             ? ({
                 ...order,
                 delivery_date: delivery_date
@@ -101,7 +101,7 @@ const EditOrderModal = ({
 
   const onSubmit = (data: UpdateOrderForm) => {
     const request: UpdateOrderRequest = {
-      order_id: orderId,
+      order_id: internalOrderId,
       delivery_date: data.delivery_date || undefined,
       delivery_method: data.delivery_method,
     }

@@ -27,6 +27,7 @@ const useOrder = () => {
       select: (data): Array<TransformedOrder> =>
         data.orders.map((order) => {
           return {
+            internalOrderId: order.id,
             orderId: order.order_id,
             orderNumber: parseOrderNameToNumber(order.order_name),
             orderName: order.order_name,
@@ -72,6 +73,13 @@ const useOrder = () => {
       onSuccess,
     })
 
+  const useCancelNvOrderMutation = (onSuccess?: () => void) =>
+    useMutation({
+      mutationFn: api.cancelNvOrder(initConfig()),
+      retry: false,
+      onSuccess,
+    })
+
   const useCancelOrderMutation = (onSuccess?: () => void) =>
     useMutation({
       mutationFn: api.cancelOrder(initConfig()),
@@ -109,6 +117,7 @@ const useOrder = () => {
     useFulfillOrderMutation,
     usePrintOrderMutation,
     useCancelOrderMutation,
+    useCancelNvOrderMutation,
     useUpdateOrderMutation,
     useUnfulfillOrderMutation,
   }

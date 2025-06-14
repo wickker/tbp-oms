@@ -60,12 +60,12 @@ const Row = memo(({ order, onClickNvTid }: RowProps) => {
   const {
     useFulfillOrderMutation,
     usePrintOrderMutation,
-    useCancelOrderMutation,
+    useCancelNvOrderMutation,
     useUnfulfillOrderMutation,
   } = useOrder()
   const fulfillOrder = useFulfillOrderMutation(handleFulfillOrderSuccess)
   const printOrder = usePrintOrderMutation(handlePrintOrderSuccess)
-  const cancelOrder = useCancelOrderMutation(handleCancelOrderSuccess)
+  const cancelOrder = useCancelNvOrderMutation(handleCancelNvOrderSuccess)
   const unfulfillOrder = useUnfulfillOrderMutation(handleUnfulfillOrderSuccess)
   const isFulfilled = order.fulfillmentStatus === FulfillmemtStatus.FULFILLED
 
@@ -78,7 +78,7 @@ const Row = memo(({ order, onClickNvTid }: RowProps) => {
       return {
         ...old,
         orders: old.orders.map((order) =>
-          order.order_id === variables.order_id
+          order.id === variables.order_id
             ? ({
                 ...order,
                 fulfillment_status: FulfillmemtStatus.UNFULFILLED,
@@ -93,8 +93,8 @@ const Row = memo(({ order, onClickNvTid }: RowProps) => {
     toast.success(`Printed label for order ${order.orderName}`)
   }
 
-  function handleCancelOrderSuccess() {
-    toast.success(`Cancelled order ${order.orderName}`)
+  function handleCancelNvOrderSuccess() {
+    toast.success(`Cancelled NV order ${order.orderName}`)
   }
 
   function handleFulfillOrderSuccess(data: FulfillOrderResponse) {
@@ -132,21 +132,19 @@ const Row = memo(({ order, onClickNvTid }: RowProps) => {
   }
 
   const handleFulfillOrder = () => {
-    if (!order.orderId) return
-    fulfillOrder.mutate({
-      order_id: order.orderId,
-    })
+    if (!order.internalOrderId) return
+    fulfillOrder.mutate(order.internalOrderId)
   }
 
   const handleCancelOrder = () => {
-    if (!order.orderId) return
-    cancelOrder.mutate(order.orderId)
+    if (!order.internalOrderId) return
+    cancelOrder.mutate(order.internalOrderId)
   }
 
   const handleUnfulfillOrder = () => {
-    if (!order.orderId) return
+    if (!order.internalOrderId) return
     unfulfillOrder.mutate({
-      order_id: order.orderId,
+      order_id: order.internalOrderId,
       fulfillment_status: FulfillmemtStatus.UNFULFILLED,
     })
   }
@@ -233,10 +231,15 @@ const Row = memo(({ order, onClickNvTid }: RowProps) => {
 
       <Content>
         <EditOrderModal
-          orderId={order.orderId || 0}
+          internalOrderId={order.internalOrderId}
           deliveryDate={order.deliveryDate || ''}
           deliveryMethod={order.deliveryMethod || ''}
         />
+
+        <Button size='sm' variant='outline'>
+          Cancel Order
+        </Button>
+        <div className='mb-2' />
 
         {!isFulfilled ? (
           <Button
