@@ -1,6 +1,7 @@
 import { PropsWithChildren } from 'react'
 import { motion } from 'motion/react'
 import { Customer } from '@/@types/customers'
+import { Button } from '@/components/commons'
 import { cn } from '@/utils/functions'
 
 type ContentProps = {
@@ -22,9 +23,10 @@ const Content = ({ children, className }: ContentProps) => {
 
 type RowProps = {
   customer: Customer
+  onOpenMessages: () => void
 }
 
-const Row = ({ customer }: RowProps) => {
+const Row = ({ customer, onOpenMessages }: RowProps) => {
   return (
     <>
       <Content>
@@ -39,7 +41,11 @@ const Row = ({ customer }: RowProps) => {
 
       <Content>{customer.created_at || ''}</Content>
 
-      <Content></Content>
+      <Content>
+        <Button size='sm' variant='outline' onClick={onOpenMessages}>
+          View Messages
+        </Button>
+      </Content>
 
       <motion.div
         className='col-span-full border-b border-neutral-200'

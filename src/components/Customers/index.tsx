@@ -12,7 +12,11 @@ import Skeleton from './Skeleton'
 const colDimensions =
   'grid-cols-[220px_240px_200px_minmax(270px,1fr)_220px_240px]'
 
-const CustomersPage = () => {
+type CustomersPageProps = {
+  onOpenMessages: () => void
+}
+
+const CustomersPage = ({ onOpenMessages }: CustomersPageProps) => {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [debouncedName] = useDebounce(name.trim(), 500)
@@ -46,7 +50,11 @@ const CustomersPage = () => {
     }
 
     return customers.map((customer) => (
-      <Row key={customer.id} customer={customer} />
+      <Row
+        key={customer.id}
+        customer={customer}
+        onOpenMessages={onOpenMessages}
+      />
     ))
   }
 
