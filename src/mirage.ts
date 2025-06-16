@@ -194,22 +194,26 @@ const startMirage = () => {
 
       this.get(`${tbpBaseUrl}/orders`, () => mockOrders)
 
-      this.get(`${Config.VITE_BASE_URL}/customers`, (_, request) => {
-        const { limit, offset } = request.queryParams
-        const offsetNum = parseInt(offset as string) || 0
-        const limitNum = parseInt(limit as string) || 5
-        const customers = mockCustomers.customers.slice(
-          offsetNum,
-          offsetNum + limitNum
-        )
+      this.get(
+        `${Config.VITE_BASE_URL}/customers`,
+        (_, request) => {
+          const { limit, offset } = request.queryParams
+          const offsetNum = parseInt(offset as string) || 0
+          const limitNum = parseInt(limit as string) || 5
+          const customers = mockCustomers.customers.slice(
+            offsetNum,
+            offsetNum + limitNum
+          )
 
-        return {
-          customers,
-          total: mockCustomers.customers.length,
-          limit: limitNum,
-          offset: offsetNum,
-        } satisfies GetCustomersResponse
-      })
+          return {
+            customers,
+            total: mockCustomers.customers.length,
+            limit: limitNum,
+            offset: offsetNum,
+          } satisfies GetCustomersResponse
+        },
+        { timing: 1000 }
+      )
 
       // POST
       this.post(
