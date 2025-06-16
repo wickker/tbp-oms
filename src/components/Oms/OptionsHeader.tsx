@@ -157,7 +157,7 @@ const OptionsHeader = ({
             Search
           </label>
           <Input
-            placeholder='Input order ID, TID, customer name or email'
+            placeholder='Shopify order ID, TID, customer name or email'
             type='text'
             value={searchPhrase}
             onChange={(e) => onSearchPhraseChange(e.target.value)}
