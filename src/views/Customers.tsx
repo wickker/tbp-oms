@@ -1,6 +1,12 @@
 import { SignedIn } from '@clerk/clerk-react'
+import useCustomer from '@/hooks/queries/useCustomer'
 
 const Customers = () => {
+  const { useGetCustomersQuery } = useCustomer()
+  const getCustomers = useGetCustomersQuery({ limit: 5, offset: 5 })
+
+  console.log(getCustomers.data)
+
   return (
     <SignedIn>
       <div className='min-h-[100dvh] min-w-max'>
