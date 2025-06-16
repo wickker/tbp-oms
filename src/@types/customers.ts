@@ -27,3 +27,4 @@ export const GetCustomersResponseSchema = z.object({
 
 export type GetCustomersRequest = z.infer<typeof GetCustomersRequestSchema>
 export type GetCustomersResponse = z.infer<typeof GetCustomersResponseSchema>
+export type Customer = z.infer<typeof CustomerSchema>

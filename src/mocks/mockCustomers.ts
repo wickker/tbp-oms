@@ -88,7 +88,7 @@ export const mockCustomers: GetCustomersResponse = {
       last_name: 'Taylor',
       email: 'james.t@example.com',
       contact: '+1-555-0131',
-      subscription: { plan: 'premium', status: 'inactive' },
+      subscription: { plan: 'premium', status: 'inactive hello world' },
       created_at: '2024-01-23T15:10:00Z',
       updated_at: '2024-03-12T14:15:00Z',
     },
