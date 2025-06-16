@@ -194,6 +194,7 @@ const OptionsHeader = ({
         size='sm'
         isLoading={isOrdersLoading && isRefreshClickedRef.current}
         onClick={handleRefresh}
+        disabled={isOrdersLoading}
       >
         Refresh
       </Button>

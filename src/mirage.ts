@@ -1,6 +1,8 @@
 import { createServer } from 'miragejs'
 import Config from '@/configs'
 import { mockOrders } from '@/mocks/mockOrders'
+import { GetCustomersResponse } from './@types/customers'
+import { mockCustomers } from './mocks/mockCustomers'
 
 const startMirage = () => {
   if (Config.VITE_ENVIRONMENT !== 'dev') return
@@ -191,6 +193,42 @@ const startMirage = () => {
       }))
 
       this.get(`${tbpBaseUrl}/orders`, () => mockOrders)
+
+      this.get(
+        `${Config.VITE_BASE_URL}/customers`,
+        (_, request) => {
+          const { limit, offset, name, email } = request.queryParams
+          const offsetNum = parseInt(offset as string) || 0
+          const limitNum = parseInt(limit as string) || 5
+          let ogCustomers = mockCustomers.customers
+
+          if (name && typeof name === 'string') {
+            ogCustomers = ogCustomers.filter(
+              (customer) =>
+                customer.first_name
+                  ?.toLowerCase()
+                  .includes(name.toLowerCase()) ||
+                customer.last_name?.toLowerCase().includes(name.toLowerCase())
+            )
+          }
+
+          if (email && typeof email === 'string') {
+            ogCustomers = ogCustomers.filter((customer) =>
+              customer.email?.toLowerCase().includes(email.toLowerCase())
+            )
+          }
+
+          const customers = ogCustomers.slice(offsetNum, offsetNum + limitNum)
+
+          return {
+            customers,
+            total: ogCustomers.length,
+            limit: limitNum,
+            offset: offsetNum,
+          } satisfies GetCustomersResponse
+        },
+        { timing: 1000 }
+      )
 
       // POST
       this.post(

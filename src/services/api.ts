@@ -1,5 +1,6 @@
 import axios, { AxiosRequestConfig } from 'axios'
 import { DateTime } from 'luxon'
+import { GetCustomersResponse } from '@/@types/customers'
 import { GetNvOrdersResponse } from '@/@types/nvOrders'
 import {
   CancelOrderResponse,
@@ -12,7 +13,7 @@ import {
 import Config from '@/configs'
 
 const api = axios.create({
-  baseURL: `${Config.VITE_BASE_URL}/wms`,
+  baseURL: Config.VITE_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -23,7 +24,12 @@ const api = axios.create({
 const getOrders =
   (config: Promise<AxiosRequestConfig>) =>
   async (): Promise<GetOrdersResponse> =>
-    api.get('/orders', await config).then((res) => res.data)
+    api.get('/wms/orders', await config).then((res) => res.data)
+
+const getCustomers =
+  (config: Promise<AxiosRequestConfig>) =>
+  async (): Promise<GetCustomersResponse> =>
+    api.get('/customers', await config).then((res) => res.data)
 
 // POST
 const printLabel = (request: PrintLabelRequest): Promise<null> =>
@@ -80,7 +86,7 @@ const fulfillOrder =
   (config: Promise<AxiosRequestConfig>) =>
   async (orderId: number): Promise<FulfillOrderResponse> =>
     api
-      .post(`/orders/${orderId}/fulfill`, {}, await config)
+      .post(`/wms/orders/${orderId}/fulfill`, {}, await config)
       .then((res) => res.data)
 
 // PATCH
@@ -89,7 +95,7 @@ const updateOrder =
   async (request: UpdateOrderRequest): Promise<UpdateOrderResponse> =>
     api
       .patch(
-        `/orders/${request.order_id}`,
+        `/wms/orders/${request.order_id}`,
         {
           delivery_date: request.delivery_date,
           delivery_method: request.delivery_method,
@@ -104,14 +110,14 @@ const cancelNvOrder =
   (config: Promise<AxiosRequestConfig>) =>
   async (orderId: number): Promise<null> =>
     api
-      .delete(`/orders/${orderId}/delivery`, await config)
+      .delete(`/wms/orders/${orderId}/delivery`, await config)
       .then((res) => res.data)
 
 const cancelOrder =
   (config: Promise<AxiosRequestConfig>) =>
   async (orderId: number): Promise<CancelOrderResponse> =>
     api
-      .delete(`/orders/${orderId}/cancel`, await config)
+      .delete(`/wms/orders/${orderId}/cancel`, await config)
       .then((res) => res.data)
 
 export default {
@@ -122,4 +128,5 @@ export default {
   cancelNvOrder,
   updateOrder,
   cancelOrder,
+  getCustomers,
 }
