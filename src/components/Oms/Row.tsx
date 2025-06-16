@@ -167,6 +167,12 @@ const Row = memo(({ order, onClickNvTid }: RowProps) => {
         >
           {order.orderName}
         </a>
+
+        <br />
+        <br />
+        <div className='text-xs'>
+          Internal Order ID: {order.internalOrderId}
+        </div>
       </Content>
 
       {onClickNvTid && (
