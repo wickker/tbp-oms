@@ -1,5 +1,6 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useInView } from 'motion/react'
+import { useDebounce } from 'use-debounce'
 import { Button } from '@/components/commons'
 import { Input } from '@/components/ui/input'
 import useCustomer from '@/hooks/queries/useCustomer'
@@ -12,29 +13,35 @@ const colDimensions =
   'grid-cols-[220px_240px_200px_minmax(270px,1fr)_220px_240px]'
 
 const CustomersPage = () => {
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [debouncedName] = useDebounce(name.trim(), 500)
+  const [debouncedEmail] = useDebounce(email.trim(), 500)
   const fetchMoreDataRef = useRef<HTMLDivElement>(null)
   const isInView = useInView(fetchMoreDataRef)
   const { useGetCustomersInfiniteQuery } = useCustomer()
-  const getCustomers = useGetCustomersInfiniteQuery({})
+  const getCustomers = useGetCustomersInfiniteQuery({
+    name: debouncedName || undefined,
+    email: debouncedEmail || undefined,
+  })
   const customers =
     getCustomers.data?.pages.flatMap((page) => page.customers) || []
   const hasCustomers =
     customers.length > 0 &&
     !getCustomers.isLoading &&
     !getCustomers.isRefetching
+  const isLoading = getCustomers.isLoading || getCustomers.isRefetching
 
   const handleRefresh = () => getCustomers.refetch()
 
   const renderCustomers = () => {
-    if (getCustomers.isLoading || getCustomers.isRefetching) {
+    if (isLoading) {
       return <Skeleton />
     }
 
     if (!hasCustomers) {
       return (
-        <div className='col-span-full mx-auto py-5 text-sm'>
-          No customers found
-        </div>
+        <div className='col-span-full mx-auto py-5'>No customers found</div>
       )
     }
 
@@ -61,10 +68,10 @@ const CustomersPage = () => {
             <Input
               placeholder='Input first or last name'
               type='text'
-              // value={searchPhrase}
-              // onChange={(e) => onSearchPhraseChange(e.target.value)}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
               className='w-[250px] text-xs'
-              // disabled={isOrdersLoading}
+              disabled={isLoading}
             />
           </div>
           <div className='flex flex-col gap-y-1'>
@@ -74,10 +81,10 @@ const CustomersPage = () => {
             <Input
               placeholder='Input email'
               type='text'
-              // value={searchPhrase}
-              // onChange={(e) => onSearchPhraseChange(e.target.value)}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className='w-[250px] text-xs'
-              // disabled={isOrdersLoading}
+              disabled={isLoading}
             />
           </div>
         </div>
@@ -86,6 +93,7 @@ const CustomersPage = () => {
           size='sm'
           isLoading={getCustomers.isRefetching}
           onClick={handleRefresh}
+          disabled={isLoading}
         >
           Refresh
         </Button>

@@ -197,17 +197,32 @@ const startMirage = () => {
       this.get(
         `${Config.VITE_BASE_URL}/customers`,
         (_, request) => {
-          const { limit, offset } = request.queryParams
+          const { limit, offset, name, email } = request.queryParams
           const offsetNum = parseInt(offset as string) || 0
           const limitNum = parseInt(limit as string) || 5
-          const customers = mockCustomers.customers.slice(
-            offsetNum,
-            offsetNum + limitNum
-          )
+          let ogCustomers = mockCustomers.customers
+
+          if (name && typeof name === 'string') {
+            ogCustomers = ogCustomers.filter(
+              (customer) =>
+                customer.first_name
+                  ?.toLowerCase()
+                  .includes(name.toLowerCase()) ||
+                customer.last_name?.toLowerCase().includes(name.toLowerCase())
+            )
+          }
+
+          if (email && typeof email === 'string') {
+            ogCustomers = ogCustomers.filter((customer) =>
+              customer.email?.toLowerCase().includes(email.toLowerCase())
+            )
+          }
+
+          const customers = ogCustomers.slice(offsetNum, offsetNum + limitNum)
 
           return {
             customers,
-            total: mockCustomers.customers.length,
+            total: ogCustomers.length,
             limit: limitNum,
             offset: offsetNum,
           } satisfies GetCustomersResponse
