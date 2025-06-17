@@ -1,5 +1,7 @@
+import { useEffect } from 'react'
 import { Navigate, Route, Routes } from 'react-router'
 import { ClerkProvider, useUser } from '@clerk/clerk-react'
+import { usePostHog } from 'posthog-js/react'
 import { RiLoader4Fill } from 'react-icons/ri'
 import { NavigationBar } from '@/components/commons'
 import Config from '@/configs'
@@ -7,7 +9,17 @@ import Customers from '@/views/Customers'
 import Main from '@/views/Main'
 
 const CheckAuth = () => {
-  const { isSignedIn, isLoaded } = useUser()
+  const { isSignedIn, isLoaded, user } = useUser()
+  const posthog = usePostHog()
+
+  useEffect(() => {
+    if (user && posthog) {
+      posthog.identify(user.emailAddresses[0].emailAddress, {
+        email: user.emailAddresses[0].emailAddress,
+        name: user.fullName,
+      })
+    }
+  }, [user, posthog])
 
   if (!isLoaded)
     return (
