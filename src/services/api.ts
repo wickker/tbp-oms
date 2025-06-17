@@ -13,7 +13,7 @@ import {
 import Config from '@/configs'
 
 const api = axios.create({
-  baseURL: Config.VITE_BASE_URL,
+  baseURL: `${Config.VITE_BASE_URL}/wms`,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -24,7 +24,7 @@ const api = axios.create({
 const getOrders =
   (config: Promise<AxiosRequestConfig>) =>
   async (): Promise<GetOrdersResponse> =>
-    api.get('/wms/orders', await config).then((res) => res.data)
+    api.get('/orders', await config).then((res) => res.data)
 
 const getCustomers =
   (config: Promise<AxiosRequestConfig>) =>
@@ -86,7 +86,7 @@ const fulfillOrder =
   (config: Promise<AxiosRequestConfig>) =>
   async (orderId: number): Promise<FulfillOrderResponse> =>
     api
-      .post(`/wms/orders/${orderId}/fulfill`, {}, await config)
+      .post(`/orders/${orderId}/fulfill`, {}, await config)
       .then((res) => res.data)
 
 // PATCH
@@ -95,7 +95,7 @@ const updateOrder =
   async (request: UpdateOrderRequest): Promise<UpdateOrderResponse> =>
     api
       .patch(
-        `/wms/orders/${request.order_id}`,
+        `/orders/${request.order_id}`,
         {
           delivery_date: request.delivery_date,
           delivery_method: request.delivery_method,
@@ -110,14 +110,14 @@ const cancelNvOrder =
   (config: Promise<AxiosRequestConfig>) =>
   async (orderId: number): Promise<null> =>
     api
-      .delete(`/wms/orders/${orderId}/delivery`, await config)
+      .delete(`/orders/${orderId}/delivery`, await config)
       .then((res) => res.data)
 
 const cancelOrder =
   (config: Promise<AxiosRequestConfig>) =>
   async (orderId: number): Promise<CancelOrderResponse> =>
     api
-      .delete(`/wms/orders/${orderId}/cancel`, await config)
+      .delete(`/orders/${orderId}/cancel`, await config)
       .then((res) => res.data)
 
 export default {
