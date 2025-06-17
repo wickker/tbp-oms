@@ -2,7 +2,7 @@ import { PropsWithChildren } from 'react'
 import { motion } from 'motion/react'
 import { Customer } from '@/@types/customers'
 import { Button } from '@/components/commons'
-import { cn } from '@/utils/functions'
+import { cn, convertDbTimestampToDisplayDate } from '@/utils/functions'
 
 type ContentProps = {
   className?: string
@@ -39,7 +39,7 @@ const Row = ({ customer, onOpenMessages }: RowProps) => {
 
       <Content>{JSON.stringify(customer.subscription) || ''}</Content>
 
-      <Content>{customer.created_at || ''}</Content>
+      <Content>{convertDbTimestampToDisplayDate(customer.created_at)}</Content>
 
       <Content>
         <Button size='sm' variant='outline' onClick={onOpenMessages}>
