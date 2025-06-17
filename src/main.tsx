@@ -11,7 +11,7 @@ import startMirage from '@/mirage'
 import queryClient from '@/services/queryClient'
 
 const options = {
-  api_host: Config.REACT_APP_PUBLIC_POSTHOG_HOST,
+  api_host: Config.VITE_REACT_APP_PUBLIC_POSTHOG_HOST,
 }
 
 if (!Config.VITE_CLERK_PUBLISHABLE_KEY) {
@@ -23,7 +23,7 @@ startMirage()
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <PostHogProvider
-      apiKey={Config.REACT_APP_PUBLIC_POSTHOG_KEY}
+      apiKey={Config.VITE_REACT_APP_PUBLIC_POSTHOG_KEY}
       options={options}
     >
       <QueryClientProvider client={queryClient}>
