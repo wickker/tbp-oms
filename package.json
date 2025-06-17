@@ -32,6 +32,7 @@
     "lucide-react": "^0.503.0",
     "luxon": "^3.6.1",
     "motion": "^12.6.3",
+    "posthog-js": "^1.253.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.57.0",
