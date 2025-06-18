@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import { ToastContainer, Slide } from 'react-toastify'
 import { QueryClientProvider } from '@tanstack/react-query'
+import { CapturedNetworkRequest } from 'posthog-js'
 import { PostHogProvider } from 'posthog-js/react'
 import App from '@/App.tsx'
 import '@/index.css'
@@ -12,6 +13,9 @@ import queryClient from '@/services/queryClient'
 
 const options = {
   api_host: Config.VITE_REACT_APP_PUBLIC_POSTHOG_HOST,
+  session_recording: {
+    maskCapturedNetworkRequestFn: (request: CapturedNetworkRequest) => request,
+  },
 }
 
 if (!Config.VITE_CLERK_PUBLISHABLE_KEY) {
