@@ -118,7 +118,7 @@ const Row = memo(({ order, onClickNvTid }: RowProps) => {
         return {
           ...old,
           orders: old.orders.map((order) =>
-            order.order_id === data.order_id
+            order.id === data.order_id
               ? ({
                   ...order,
                   fulfillment_status: FulfillmemtStatus.FULFILLED,
